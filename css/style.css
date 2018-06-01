@@ -1,0 +1,114 @@
+html,
+body {
+    height: 100%;
+}
+
+.header {
+    padding: 2px 5px;
+    background-color: #fff;
+    display: block;
+    height: 50px;
+}
+
+.header>div {
+    float: right;
+    margin: 5px;
+}
+
+.header>div>.btn {
+    font-size: 14px;
+}
+
+.header>div>.btn>i {
+    font-size: 20px;
+}
+
+.header>.logo-fitm {
+    float: left;
+    width: 75px;
+    height: auto;
+}
+
+table>thead>tr>th {
+    background: #fff;
+}
+
+table * {
+    background: #f1f2f6;
+    cursor: default;
+    user-select: none;
+}
+
+body {
+    background: #c8d6e5;
+    color: #000;
+}
+
+* {
+    font-family: 'Trirong', serif;
+    font-size: 16px;
+}
+
+section.main-warpper {
+    width: 100%;
+    height: 100%;
+}
+
+.left-sidebar {
+    padding: 0;
+    margin: 0;
+    width: 240px;
+    height: calc(100% - 50px);
+    background: #fff;
+    float: left;
+}
+
+.sidebar-nav ul {
+    padding: 0;
+    margin: 0
+}
+
+.sidebar-nav ul li {
+    padding: 5px 15px;
+    list-style: none;
+}
+.sidebar-nav ul .label-nav{
+    padding: 7px 35px;
+}
+.sidebar-nav ul li.tab-nav:not(.active):hover{
+    background: #bdc3c7;
+    cursor: pointer;
+}
+.page-warpper{
+    float: left;
+    width: calc(100% - 240px);
+    height: calc(100% - 50px);
+    background: #fafafa;
+}
+.tab-nav.active{
+    background: #3498db;
+    color: #fff;
+}
+.tab-nav.active:hover{
+    background: #2980b9;
+    cursor: pointer;
+}
+
+.form-content {
+    display: none;
+}
+
+.btn-logout {
+    text-align: center;
+    color: #fff;
+    background: #dc3545;
+    cursor: pointer;
+}
+
+/*
+#3DB5E0
+#1083C4
+#0F6CBB
+#0DA5E5
+#49444A
+*/

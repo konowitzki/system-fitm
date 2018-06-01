@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <!-- Script -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <!-- QRcode -->
+  <script src="../js/qrcode.min.js"></script>
+
+  <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 2</title>
+
+  <style>
+    #nav {
+      background-color: #C5EFF7;
+    }
+  </style>
+</head>
+<body>
+  <!-- Start Content -->
+    <!-- Start Navbar -->
+      <nav id="nav">
+        <br/>
+          <div class="row">
+          <div class="col-lg-6">
+            <center>
+              <img src="../img/fitm.png" style="width: 30%; height: 90%;" />
+            </center>
+          </div>
+          <div class="col-lg-6 text-left">
+            <h2>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRcode</h2>
+            <h4>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือวิทยาเขตปราจีนบุรี</h4>
+          </div>
+        </div>
+        <br/>
+      </nav>
+    <!-- End Navbar -->
+
+    <br/>
+
+    <!-- Start Table -->
+      <div class="container text-center">
+        <table id="ex-table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ลำดับ</th>
+              <th>วันที่</th>
+              <th>เลขที่รับ</th>
+              <th>ลงวันที่ที่</th>
+              <th>จาก</th>
+              <th>ถึง</th>
+              <th>เรื่อง</th>
+              <th>การปฏิบัติ</th>
+              <th>หมายเหตุ</th>
+              <th>สถานะเอกสาร</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    <!-- End Table -->
+
+    <!-- End Content -->
+
+  <!-- End qrcode -->
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
+    authDomain: "fitm-system-3.firebaseapp.com",
+    databaseURL: "https://fitm-system-3.firebaseio.com",
+    projectId: "fitm-system-3",
+    storageBucket: "fitm-system-3.appspot.com",
+    messagingSenderId: "1083923833969"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database();
+
+  // Edit User
+  function onSubmit(uid) {
+    var updates = {};
+    firebase.database().ref('documents/data/' + uid).once('value').then(function(snapshot) {
+      var data = snapshot.val();
+      updates["documents/data/" + uid] = {
+        date : data.date,
+        datenow : data.datenow,
+        from : data.from,
+        note : data.note,
+        numreceive : data.numreceive,
+        reach : data.reach,
+        status: "รออนุมัติ",
+        subject : data.subject,
+        work : data.work,
+        role: data.role
+      };
+      firebase.database().ref().update(updates);
+      location.reload();
+    });
+  }
+
+  database.ref("documents").once('child_added', function(snapshot) {
+  //ดึงnode users
+    if(snapshot.exists()){
+    var content = '';
+    var i = 1;
+      snapshot.forEach(function(data){
+        var val = data.val();
+          // console.log("row",data.val());
+          content +='<tr>';
+          content += '<td>' + i + '</td>';
+          content += '<td>' + val.date + '</td>';
+          content += '<td>' + val.numreceive + '</td>';
+          content += '<td>' + val.datenow + '</td>';
+          content += '<td>' + val.from + '</td>';
+          content += '<td>' + val.reach + '</td>';
+          content += '<td>' + val.subject + '</td>';
+          content += '<td>' + val.work + '</td>';
+          content += '<td>' + val.note + '</td>';
+          content += '<td> <button type="button" class="btn btn-danger" onclick="onLogin()"> รับเข้า </button> </td>';
+          content += '</tr>';
+          i++;
+      });
+    var theDiv = document.getElementById("ex-table");
+    theDiv.innerHTML += content;
+    }
+  });
+
+  function onLogin() {
+    window.location.href = "../login.html";
+  }
+  </script>
+</body>
+</html>

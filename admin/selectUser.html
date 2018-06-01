@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Start security -->
+    <script>
+      var local = localStorage.getItem("session");
+        if (local === "undefined" || local === null) {
+          window.location.href = "../index.html";
+        }
+    </script>
+  <!-- End security -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <!-- Script -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  
+  <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : เลือกสมาชิก</title>
+
+  <style>
+    #nav {
+      background-color: #C5EFF7;
+    }
+  </style>
+</head>
+<body>
+  <!-- Start Navbar -->
+    <nav id="nav">
+      <br/>
+        <div class="row">
+        <div class="col-lg-6">
+          <center>
+            <img src="../img/fitm.png" style="width: 30%; height: 90%;" />
+          </center>
+        </div>
+        <div class="col-lg-6">
+          <h3>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRcode</h3>
+          <h4>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือวิทยาเขตปราจีนบุรี</h4>
+        </div>
+      </div>
+      <br/>
+    </nav>  
+  <!-- End Navbar -->
+
+  <br/>
+
+  <!-- Start main -->
+
+    <!-- Start Table -->
+      <div class="container text-center">
+        <table id="user-table" class="table table-bordered">
+          <thead>
+            <tr>
+              <th>ลำดับ</th>
+              <th>ไอดีผู้ใช้</th>
+              <th>ชื่อ</th>
+              <th>อีเมล์</th>
+              <th>ส่งข้อมูล</th>
+            </tr>
+          </thead>
+        </table>
+        <a href="./admin3.html">back</a>
+      </div>
+    <!-- End Table -->
+
+  <!-- End main -->
+
+  <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
+      authDomain: "fitm-system-3.firebaseapp.com",
+      databaseURL: "https://fitm-system-3.firebaseio.com",
+      projectId: "fitm-system-3",
+      storageBucket: "fitm-system-3.appspot.com",
+      messagingSenderId: "1083923833969"
+    };
+    var searchParams = new URLSearchParams(window.location.search);
+    console.log("QueryString", searchParams.get("docs"));
+    firebase.initializeApp(config);
+
+    database = firebase.database();
+
+    var userId = localStorage.getItem("session");
+
+    // onSend
+      function onSeed(docs, user) {
+        var updates = {};
+        firebase.database().ref('documents/data/' + docs).once('value').then(function(snapshot) {
+          var data = snapshot.val();
+          updates["documents/data/" + docs] = {
+            date: data.date,
+            numreceive: data.numreceive,
+            datenow: data.datenow,
+            from: data.from,
+            reach: data.reach,
+            subject: data.subject,
+            work: data.work,
+            note: data.note,
+            status: data.status,
+            role: user
+          };
+          firebase.database().ref().update(updates);
+          // location.reload();
+        });
+      }
+
+    // Start user data
+      database.ref("users").once('child_added', function(snapshot) {
+      // ดึงnode users
+        if(snapshot.exists()) {
+        var content = '';
+        var i = 1;
+          snapshot.forEach(function(data) {
+            var val = data.val();
+              // console.log("row",data.val());
+              content += '<tr>';
+              content += '<td>' + i + '</td>';
+              content += '<td>' + data.key + '</td>';
+              content += '<td>' + val.name + '</td>';
+              content += '<td>' + val.email + '</td>';
+              content += '<td> <button type="button" name="'+ val.name +'" class="btn btn-info btn-send" value="'+ data.key +'")"> SEND </button> </td>';
+              content += '</tr>';
+              i++;
+          });
+        var theDiv = document.getElementById("user-table");
+        theDiv.innerHTML += content;
+        }
+      }).then(function() {
+        $('.btn-send').on('click', function() {
+          var searchParams = new URLSearchParams(window.location.search);
+          getDoc = searchParams.get("docs");
+          onSeed( getDoc , $(this).val());
+          console.log("QueryString", searchParams.get("docs"));
+          console.log( $(this).val() ); 
+          // $(this).attr("name")
+        });
+      });
+    // End user data
+
+    // alert(userId);
+      firebase.database().ref('users/data/' + userId).once('value')
+      .then(function(snapshot) {
+        $("#result").text(snapshot.val().name);
+      });
+
+    // logout
+      function logout() {
+        localStorage.removeItem("session");
+        window.location.href = "../login.html";
+      }
+  </script>
+</body>
+</html>

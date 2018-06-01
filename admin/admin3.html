@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
+    <!-- Script -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <!-- QRcode -->
+    <script src="../js/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/session.js"></script>
+
+    <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 3</title>
+
+</head>
+
+<body>
+    <section class="main-warpper">
+        <div class="header">
+            <img class="logo-fitm" src="../img/fitm.png" />
+            <div>
+                <div class="btn btn-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="result"></span>
+                </div>
+            </div>
+        </div>
+        <div class="left-sidebar">
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="label-nav">หน้าหลัก</li>
+                    <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
+                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+                    <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
+                    <li id="v-pills-other-tab" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
+                    <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
+                </ul>
+            </nav>
+        </div>
+        <div class="page-warpper">
+            <!-- Add Documents -->
+            <div id="add-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="far fa-file-alt" style="font-size: 24px;"></i> เพิ่มเอกสาร
+                </div>
+                <form class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="date">วันที่</label>
+                            <input id="date" class="form-control" type="date" required>
+                            <label for="datenow">ลงวันที่ที่</label>
+                            <input id="datenow" class="form-control" type="date" required>
+                            <label for="reach">ถึง</label>
+                            <input id="reach" class="form-control" type="text" required>
+                            <label for="work">การปฏิบัติ</label>
+                            <input id="work" class="form-control" type="text" required>
+                            <label for="status">สถานะ</label>
+                            <input id="status" class="form-control" type="text" value="รับเข้า" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="numreceive">เลขที่รับ</label>
+                            <input id="numreceive" class="form-control" type="number" required>
+                            <label for="from">จาก</label>
+                            <input id="from" class="form-control" type="text" required>
+                            <label for="subject">เรื่อง</label>
+                            <input id="subject" class="form-control" type="text" required>
+                            <label for="note">หมายเหตุ</label>
+                            <input id="note" class="form-control" type="text" required>
+                            <label for="role">สิทธิ์</label>
+                            <input id="role" class="form-control" type="text" value="user" disabled required>
+                        </div>
+                    </div>
+                    <br>
+                    <button id="add-data" type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
+                    <button type="reset" class="btn btn-danger">ล้างข้อมูล</button>
+                </form>
+            </div>
+            <!-- Status Documents -->
+            <div id="status-documents-content" class="container-fluid form-content">
+                <table id="status-table" class="table table-bordered">
+                    <thead>
+                        <tr class="text-center">
+                            <th>เลขที่รับ</th>
+                            <th>เรื่อง</th>
+                            <th>การปฏิบัติ</th>
+                            <th>หมายเหตุ</th>
+                            <th>เอกสาร</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <!-- Save Documents -->
+            <div id="save-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="far fa-file-alt" style="font-size: 24px;"></i> เก็บเอกสาร
+                </div>
+                <form class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="save-date">วันที่</label>
+                            <input id="save-date" class="form-control" type="date">
+                            <label for="save-datenow">ลงวันที่ที่</label>
+                            <input id="save-datenow" class="form-control" type="date">
+                            <label for="save-reach">ถึง</label>
+                            <input id="save-reach" class="form-control" type="text">
+                            <label for="save-work">การปฏิบัติ</label>
+                            <input id="save-work" class="form-control" type="text">
+                        </div>
+                        <div class="col-6">
+                            <label for="save-numreceive">เลขที่รับ</label>
+                            <input id="save-numreceive" class="form-control" type="number">
+                            <label for="save-from">จาก</label>
+                            <input id="save-from" class="form-control" type="text">
+                            <label for="save-subject">เรื่อง</label>
+                            <input id="save-subject" class="form-control" type="text">
+                            <label for="save-note">หมายเหตุ</label>
+                            <input id="save-note" class="form-control" type="text">
+                        </div>
+                    </div>
+                    <br>
+                    <input id="fileButton" type="file" class="form-control-file">
+                    <br>
+                    <button id="save-add-data" type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
+                    <button type="submit" class="btn btn-danger">ล้างข้อมูล</button>
+                </form>
+                <br>
+                <table id="status-table-file" class="table table-bordered">
+                    <thead>
+                        <tr class="text-center">
+                            <th>เลขที่รับ</th>
+                            <th>เรื่อง</th>
+                            <th>การปฏิบัติ</th>
+                            <th>หมายเหตุ</th>
+                            <th>จัดการเอกสาร</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $('#add-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#add-documents-content').show();
+        });
+        $('#status-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#status-documents-content').show();
+        });
+        $('#save-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#save-documents-content').show();
+        });
+        $('.tab-nav').on('click', function () {
+            $('.tab-nav').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        database.ref("documents").once('child_added', function (snapshot) {
+            //ดึงnode users
+            if (snapshot.exists()) {
+                var content = '';
+                snapshot.forEach(function (data) {
+                    var val = data.val();
+                    // console.log("row",data.val());
+                    content += '<tr>';
+                    content += '<td>' + val.numreceive + '</td>';
+                    content +=
+                        `<td><h5>${val.subject}</h5>
+                        <small>${val.date}</small>
+                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
+                        </td>`;
+                    content += '<td>' + val.work + '</td>';
+                    content += '<td>' + val.note + '</td>';
+                    content += '<td> <button type="button" class="btn btn-danger btn-submit" value="' +
+                        data.key + '")"> ' + val.status + ' </button> </td>';
+                    content += '<td> <button class="btn btn-warning btn-send" value="' +
+                        data.key + '">สมาชิก</button> </td>';
+                    content += '</tr>';
+                });
+                var theDiv = document.getElementById("status-table");
+                theDiv.innerHTML += content;
+            }
+        }).then(function () {
+            $('.btn-submit').on('click', function () {
+                onSubmit($(this).val());
+                console.log($(this).val());
+            });
+            $('.btn-send').on('click', function () {
+                onSend($(this).val());
+                let txt = 'https://fitm-system-3.firebaseapp.com/admin3/selectUser.html?docs=' + $(this)
+                    .val();
+                window.location.href = txt;
+                console.log($(this).val());
+            });
+        });
+        var storage = firebase.storage();
+        var database = firebase.database();
+
+        $('#add-data').on('click', function (e) {
+            dbRef.child('documents/data/').push().set({
+                date: $('#date').val(),
+                datenow: $('#datenow').val(),
+                from: $('#from').val(),
+                note: $('#note').val(),
+                numreceive: $('#numreceive').val(),
+                reach: $('#reach').val(),
+                role: $('#role').val(),
+                status: $('#status').val(),
+                subject: $('#subject').val(),
+                work: $('#work').val()
+            });
+            alert("เพิ่มข้อมูลสำเร็จ !");
+        });
+
+        database.ref("backup").once('child_added', function (snapshot) {
+            //ดึงnode users
+            if (snapshot.exists()) {
+                var content = '';
+                snapshot.forEach(function (data) {
+                    var val = data.val();
+                    // console.log("row",data.val());
+                    content += '<tr>';
+                    content += '<td>' + val.numreceive + '</td>';
+                    content +=
+                        `<td><h5>${val.subject}</h5>
+                        <small>${val.date}</small>
+                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
+                        </td>`;
+                    content += '<td>' + val.work + '</td>';
+                    content += '<td>' + val.note + '</td>';
+                    content += '<td class="text-center"> <button value="' + val.thumbnail +
+                        '" class="get-doc btn btn-info">เอกสาร</a></td>';
+                    content += '</tr>';
+                });
+                var theDiv = document.getElementById("status-table-file");
+                theDiv.innerHTML += content;
+            }
+        }).then(function () {
+            $('.get-doc').on('click', function () {
+                storage.ref().child('backupDocs/'+ $(this).val() ).getDownloadURL().then(function (url) {
+                    // `url` is the download URL for 'images/stars.jpg'
+                    // This can be downloaded directly:
+                    var xhr = new XMLHttpRequest();
+                    xhr.responseType = 'blob';
+                    xhr.onload = function (event) {
+                        var blob = xhr.response;
+                    };
+                    xhr.open('GET', url);
+                    xhr.send();
+
+                }).catch(function (error) {
+                    // Handle any errors
+                });
+            })
+        });
+        // Start Upload
+        var thumbnail;
+        $('#fileButton').on('change', function (e) {
+            var file = e.target.files[0];
+            var storageRef = storage.ref('backupDocs/' + file.name);
+            storageRef.put(file);
+            thumbnail = file.name;
+            //thumbnail = "gs://fitm-system-3.appspot.com/" + config["storageBucket"] + "/o/" + file.name + "?alt=media";
+        });
+        $('#save-add-data').on('click', function (e) {
+            let date = $('#save-date').val();
+            let numreceive = $('#save-numreceive').val();
+            let datenow = $('#save-datenow').val();
+            let from = $('#save-from').val();
+            let reach = $('#save-reach').val();
+            let subject = $('#save-subject').val();
+            let work = $('#save-work').val();
+            let note = $('#save-note').val();
+            let rootRef = firebase.database().ref();
+            let storesRef = rootRef.child('backup/data/');
+            let newStoreRef = storesRef.push();
+            newStoreRef.set({
+                date: date,
+                numreceive: numreceive,
+                datenow: datenow,
+                from: from,
+                reach: reach,
+                subject: subject,
+                work: work,
+                note: note,
+                thumbnail: thumbnail
+            });
+            alert("เพิ่มข้อมูลสำเร็จ !");
+        });
+        // End Upload
+
+        // Start qrcode
+        /*
+        var qrcode = new QRCode(document.getElementById("qrcode"));
+        $('#url-qrcode').on('change', function () {
+            qrcode.clear();
+            // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
+            qrcode.makeCode($(this).val());
+        })
+        */
+        // End qrcode 
+
+        // Start status table
+        // Edit User
+        function onSubmit(uid) {
+            var updates = {};
+            firebase.database().ref('documents/data/' + uid).once('value').then(function (snapshot) {
+                var data = snapshot.val();
+                updates["documents/data/" + uid] = {
+                    date: data.date,
+                    datenow: data.datenow,
+                    from: data.from,
+                    note: data.note,
+                    numreceive: data.numreceive,
+                    reach: data.reach,
+                    status: "ติดต่อห้องภาค",
+                    subject: data.subject,
+                    work: data.work,
+                    role: data.role
+                };
+                firebase.database().ref().update(updates);
+                location.reload();
+            });
+        }
+
+        // Start onSend
+        function onSend(uid) {
+            var updates = {};
+            firebase.database().ref('users/data/' + uid).once('value').then(function (snapshot) {
+                var data = snapshot.val();
+                updates["users/data/" + uid] = {
+                    email: data.email,
+                    isAdmin: data.user,
+                    name: data.name,
+                    password: data.password
+                };
+                firebase.database().ref().update(updates);
+                location.reload();
+            });
+        }
+    </script>
+    <!--script>
+        // Initialize Firebase
+
+        
+        // End onSend
+
+        
+    </script-->
+</body>
+
+</html>
