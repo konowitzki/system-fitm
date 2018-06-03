@@ -83,10 +83,7 @@
                         </td>`;
                     content += '<td>' + val.work + '</td>';
                     content += '<td>' + val.note + '</td>';
-                    content += '<td> <button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")"> ' + val.status + ' </button> </td>';
-                    content += '<td> <button class="btn btn-warning btn-send" value="' +
-                        data.key + '">สมาชิก</button> </td>';
+                    content += '<td> <div class="btn btn-danger">' + val.status + '</div></td>';
                     content += '</tr>';
                     i++;
                     if (i % interval === 0) {
@@ -98,7 +95,7 @@
                         let thead = $('<thead></thead>');
                         let tr = $('<tr class="text-center"></tr>');
                         let th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th>'
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
                         );
                         thead.append(tr.append(th));
                         pagContent.append(table.append(thead, content));
@@ -116,7 +113,7 @@
                     let thead = $('<thead></thead>');
                     let tr = $('<tr class="text-center"></tr>');
                     let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th>'
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
                     );
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));
@@ -129,17 +126,6 @@
                 */
             }
         }).then(function () {
-            $('.btn-submit').on('click', function () {
-                onSubmit($(this).val());
-                console.log($(this).val());
-            });
-            $('.btn-send').on('click', function () {
-                onSend($(this).val());
-                let txt = 'https://fitm-system-3.firebaseapp.com/admin3/selectUser.html?docs=' + $(this)
-                    .val();
-                window.location.href = txt;
-                console.log($(this).val());
-            });
             $('.pagination-content').hide();
             $($('.pagination-content')[0]).show();
             $($('.pagination-page')[1]).addClass('active');
