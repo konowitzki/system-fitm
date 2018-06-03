@@ -236,6 +236,8 @@
       var note = document.getElementById('note').value;
       var status = document.getElementById('status').value;
       var role = document.getElementById('role').value;
+      var cradit;
+      var addten;
       var rootRef = firebase.database().ref();
       var storesRef = rootRef.child('documents/data/');
       var newStoreRef = storesRef.push();
