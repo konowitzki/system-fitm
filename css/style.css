@@ -112,3 +112,47 @@ section.main-warpper {
 #0DA5E5
 #49444A
 */
+
+/* Pagination */
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination>.pagination-page {
+    font-family: Arial, Helvetica, sans-serif;
+    float: left;
+    padding: 8px 16px;
+    margin: 2px 1px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.pagination>.pagination-page:hover {
+    background: #c8d6e5;
+}
+
+.pagination>.pagination-page.active {
+    color: #fff;
+    background: #54a0ff;
+}
+
+.pagination>.pagination-page.active:hover {
+    background: #2e86de;
+}
+
+.pagination>.pagination-page.backward::before{
+    content: '<';
+}
+.pagination>.pagination-page.forward::before{
+    content: '>';
+}
+
+.pagination-warpper{
+    padding: 4px 8px;
+}
+.pagination-content{
+    display: block;
+}
