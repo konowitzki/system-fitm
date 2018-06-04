@@ -2,14 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Start security -->
-    <script>
-        var local = localStorage.getItem("session");
-        if (local === "undefined" || local === null) {
-            window.location.href = "../login.html";
-        }
-    </script>
-    <!-- End security -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -39,17 +31,13 @@
 
 <body>
     <section class="main-warpper">
-        <div class="header">
-
-        </div>
         <div class="left-sidebar">
             <nav class="sidebar-nav">
                 <img class="logo-fitm" src="../img/fitm.png" />
-                <div>
-                    <div class="btn btn-info">
-                        <i class="fas fa-user-circle"></i>
-                        <span id="result"></span>
-                    </div>
+                <div class="text-center" style="margin-top: 5px;">
+                    <i class="fas fa-user-circle"></i>
+                    <br>
+                    <span id="result"></span>
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
@@ -76,7 +64,7 @@
                             <label for="work">การปฏิบัติ</label>
                             <input id="work" class="form-control" type="text" required>
                             <label for="status">สถานะ</label>
-                            <input id="status" class="form-control" type="text" value="รับเข้า" required>
+                            <input id="status" class="form-control" type="text" value="รับเข้า" required disabled>
                         </div>
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
@@ -122,99 +110,12 @@
             <button id="btn-qrcode" class="btn btn-info" onclick="printf()">พิมพ์ QRcode</button>
         </div>
     </div>
-<<<<<<< HEAD
     <script>
         var qrcode = new QRCode(document.getElementById("qrcode"));
         $('#url-qrcode').on('change', function () {
             qrcode.clear();
             // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
             qrcode.makeCode($(this).val());
-=======
-  </div>
-  <!-- End Main -->
-  
-  <br/>
-
-  <!-- Start Table -->
-  <div class="container text-center">
-    <table id="ex-table" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ลำดับ</th>
-          <th>วันที่</th>
-          <th>เลขที่รับ</th>
-          <th>ลงวันที่ที่</th>
-          <th>จาก</th>
-          <th>ถึง</th>
-          <th>เรื่อง</th>
-          <th>การปฏิบัติ</th>
-          <th>หมายเหตุ</th>
-          <th>สถานะเอกสาร</th>
-          <th class="text-center"><i class="fas fa-qrcode" style="font-size: 20px"></i></i></th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <!-- End Table -->
-
-
-  <!-- End Content -->
-
-  <!-- Start qrcode -->
-  <script>
-    var qrcode = new QRCode(document.getElementById("qrcode"));
-    $('#url-qrcode').on('change', function() {
-      qrcode.clear();
-      // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
-      qrcode.makeCode($(this).val());
-    })
-  </script>
-  <!-- End qrcode -->
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-  <script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
-    authDomain: "fitm-system-3.firebaseapp.com",
-    databaseURL: "https://fitm-system-3.firebaseio.com",
-    projectId: "fitm-system-3",
-    storageBucket: "fitm-system-3.appspot.com",
-    messagingSenderId: "1083923833969"
-  };
-  firebase.initializeApp(config);
-
-  var database = firebase.database();
-    document.getElementById("add-data").onclick = function(e) {
-      var date = document.getElementById('date').value;
-      var numreceive = document.getElementById('numreceive').value;
-      var datenow = document.getElementById('datenow').value;
-      var from = document.getElementById('from').value;
-      var reach = document.getElementById('reach').value;
-      var subject = document.getElementById('subject').value;
-      var work = document.getElementById('work').value;
-      var note = document.getElementById('note').value;
-      var status = document.getElementById('status').value;
-      var role = document.getElementById('role').value;
-      var cradit;
-      var addten;
-      var rootRef = firebase.database().ref();
-      var storesRef = rootRef.child('documents/data/');
-      var newStoreRef = storesRef.push();
-        newStoreRef.set({
-          date: date,
-          numreceive: numreceive,
-          datenow: datenow,
-          from: from,
-          reach: reach,
-          subject: subject,
-          work: work,
-          note: note,
-          status: status,
-          role: role,
-          cradit,
-          addten
->>>>>>> f5031dbe4efc02fe247ac79831cc4b2de45f53df
         });
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
@@ -228,65 +129,103 @@
             $('.tab-nav').removeClass('active');
             $(this).addClass('active');
         });
-        document.getElementById("add-data").onclick = function (e) {
-            var date = document.getElementById('date').value;
-            var numreceive = document.getElementById('numreceive').value;
-            var datenow = document.getElementById('datenow').value;
-            var from = document.getElementById('from').value;
-            var reach = document.getElementById('reach').value;
-            var subject = document.getElementById('subject').value;
-            var work = document.getElementById('work').value;
-            var note = document.getElementById('note').value;
-            var status = document.getElementById('status').value;
-            var role = document.getElementById('role').value;
-            var cradit;
-            var addten;
-            var rootRef = firebase.database().ref();
-            var storesRef = rootRef.child('documents/data/');
-            var newStoreRef = storesRef.push();
-            newStoreRef.set({
-                date: date,
-                numreceive: numreceive,
-                datenow: datenow,
-                from: from,
-                reach: reach,
-                subject: subject,
-                work: work,
-                note: note,
-                status: status,
-                role: role
-            });
-            alert("เพิ่มข้อมูลสำเร็จ !");
-            location.reload();
-        }
 
+        document.getElementById('datenow').valueAsDate = new Date();
+        $('#add-data').on('click', function (e) {
+            let input = $('.form-control');
+            for (let i = 0; i < input.length; i++) {
+                if ($(input[i]).val() === '') {
+                    return false;
+                }
+            }
+            dbRef.child('documents/data/').push().set({
+                date: $('#date').val(),
+                datenow: $('#datenow').val(),
+                from: $('#from').val(),
+                note: $('#note').val(),
+                numreceive: $('#numreceive').val(),
+                reach: $('#reach').val(),
+                role: $('#role').val(),
+                status: $('#status').val(),
+                subject: $('#subject').val(),
+                work: $('#work').val(),
+                cradit: $('#result').text(),
+                addten: ''
+            });
+        });
+        //  Pagination Data
         database.ref("documents").once('child_added', function (snapshot) {
             //ดึงnode users
             if (snapshot.exists()) {
                 var content = '';
-                var i = 1;
+                let i = 0,
+                    page = 0,
+                    interval = 5;
                 snapshot.forEach(function (data) {
-                    var val = data.val();
-                    // console.log("row",data.val());
+                    let val = data.val();
                     content += '<tr>';
-                    content += '<td>' + i + '</td>';
-                    content += '<td>' + val.date + '</td>';
                     content += '<td>' + val.numreceive + '</td>';
-                    content += '<td>' + val.datenow + '</td>';
-                    content += '<td>' + val.from + '</td>';
-                    content += '<td>' + val.reach + '</td>';
-                    content += '<td>' + val.subject + '</td>';
+                    content +=
+                        `<td><h5>${val.subject}</h5>
+                        <small>${val.date}</small>
+                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
+                        </td>`;
                     content += '<td>' + val.work + '</td>';
                     content += '<td>' + val.note + '</td>';
-                    content += '<td>' + val.status + '</td>';
-                    content += '<td> <input type="checkbox" class="form-check-input" value="' + val.numreceive +
-                        '"> </td>';
+                    content +=
+                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                        data.key + '")">' + val.status + '</button></td>';
+                    content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
+                        '</div></td>';
                     content += '</tr>';
                     i++;
+                    if (i % interval === 0) {
+                        page++;
+                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                            '.pagination-page.forward');
+                        let pagContent = $('<div class="pagination-content"></div>');
+                        let table = $('<table class="table table-bordered"></table>');
+                        let thead = $('<thead></thead>');
+                        let tr = $('<tr class="text-center"></tr>');
+                        let th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, content));
+                        $('.pagination-warpper').append(pagContent);
+                        content = '';
+                        console.log(i);
+                    }
                 });
-                var theDiv = document.getElementById("ex-table");
-                theDiv.innerHTML += content;
+                if (i % interval !== 0) {
+                    page++;
+                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                        '.pagination-page.forward');
+                    let pagContent = $('<div class="pagination-content"></div>');
+                    let table = $('<table class="table table-bordered"></table>');
+                    let thead = $('<thead></thead>');
+                    let tr = $('<tr class="text-center"></tr>');
+                    let th = $(
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                    );
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, content));
+                    $('.pagination-warpper').append(pagContent);
+                    content = '';
+                }
             }
+        }).then(function () {
+            $('.pagination-content').hide();
+            $($('.pagination-content')[0]).show();
+            $($('.pagination-page')[1]).addClass('active');
+            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                let index = $(this).text() - 1;
+                $('.pagination-page').removeClass('active');
+                $(this).addClass('active');
+                $('.pagination-content').hide();
+                $($('.pagination-content')[index]).show();
+
+            });
         });
 
         // qrcode

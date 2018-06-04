@@ -31,19 +31,15 @@
 
 <body>
     <section class="main-warpper">
-        <div class="header">
-            <img class="logo-fitm" src="../img/fitm.png" />
-            <div>
-                <div class="btn btn-info">
-                    <i class="fas fa-user-circle"></i>
-                    <span id="result"></span>
-                </div>
-            </div>
-        </div>
         <div class="left-sidebar">
             <nav class="sidebar-nav">
+                <img class="logo-fitm" src="../img/fitm.png" />
+                <div class="text-center" style="margin-top: 5px;">
+                    <i class="fas fa-user-circle"></i>
+                    <br>
+                    <span id="result"></span>
+                </div>
                 <ul>
-                    <li class="label-nav">หน้าหลัก</li>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
@@ -185,10 +181,12 @@
                         </td>`;
                     content += '<td>' + val.work + '</td>';
                     content += '<td>' + val.note + '</td>';
-                    content += '<td> <button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")"> ' + val.status + ' </button> </td>';
-                    content += '<td> <button class="btn btn-warning btn-send" value="' +
-                        data.key + '">สมาชิก</button> </td>';
+                    content += '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                        data.key + '")">' + val.status + '</button></td>';
+                    content += '<td class="text-center"><button class="btn btn-warning btn-send" value="' +
+                        data.key + '">สมาชิก</button></td>';
+                    content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
+                        '</div></td>';
                     content += '</tr>';
                     i++;
                     if (i % interval === 0) {
@@ -200,7 +198,7 @@
                         let thead = $('<thead></thead>');
                         let tr = $('<tr class="text-center"></tr>');
                         let th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th>'
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>เลือก</th><th>ผู้ใช้</th>'
                         );
                         thead.append(tr.append(th));
                         pagContent.append(table.append(thead, content));
@@ -218,17 +216,13 @@
                     let thead = $('<thead></thead>');
                     let tr = $('<tr class="text-center"></tr>');
                     let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th>'
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th><th>ผู้ใช้</th>'
                     );
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));
                     $('.pagination-warpper').append(pagContent);
                     content = '';
                 }
-                /*
-                var theDiv = document.getElementById("status-table");
-                theDiv.innerHTML += content;
-                */
             }
         }).then(function () {
             $('.btn-submit').on('click', function () {
@@ -257,6 +251,8 @@
         var storage = firebase.storage();
         var database = firebase.database();
 
+        document.getElementById('datenow').valueAsDate = new Date();
+
         $('#add-data').on('click', function (e) {
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
@@ -270,10 +266,9 @@
                 subject: $('#subject').val(),
                 work: $('#work').val()
             });
-            alert("เพิ่มข้อมูลสำเร็จ !");
         });
 
-        database.ref("documents/data").once('child_added', function (snapshot) {
+        database.ref("documents/data").once('value', function (snapshot) {
             //ดึงnode users
             if (snapshot.exists()) {
                 var content = '';
@@ -344,9 +339,9 @@
                 subject: subject,
                 work: work,
                 note: note,
-                thumbnail: thumbnail
+                cradit: $('#result').text(),
+                addten: thumbnail
             });
-            alert("เพิ่มข้อมูลสำเร็จ !");
         });
         // End Upload
 
@@ -400,14 +395,6 @@
             });
         }
     </script>
-    <!--script>
-        // Initialize Firebase
-
-        
-        // End onSend
-
-        
-    </script-->
 </body>
 
 </html>
