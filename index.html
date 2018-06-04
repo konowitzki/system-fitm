@@ -53,7 +53,7 @@
   <script>
 
   // ดึงข้อมูล
-    database.ref("documents").once('child_added', function(snapshot) {
+    database.ref("documents/data").once('child_added', function(snapshot) {
     //ดึงnode users
       if(snapshot.exists()){
       var content = '';
