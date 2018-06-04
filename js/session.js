@@ -1,6 +1,6 @@
 // Session
-let local = localStorage.getItem("session");
-if (local === "undefined" || local === null) {
+let userId = localStorage.getItem("session");
+if (userId === "undefined" || userId === null) {
     window.location.href = "../login.html";
 }else{
     // session

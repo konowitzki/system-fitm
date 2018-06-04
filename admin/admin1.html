@@ -1,319 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <!-- Start security -->
+    <!-- Start security -->
     <script>
-      var local = localStorage.getItem("session");
+        var local = localStorage.getItem("session");
         if (local === "undefined" || local === null) {
-          window.location.href = "../login.html";
+            window.location.href = "../login.html";
         }
     </script>
-  <!-- End security -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- CSS -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-  <!-- Script -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-  <!-- QRcode -->
-  <script src="../js/qrcode.min.js"></script>
+    <!-- End security -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
+    <!-- Script -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <!-- QRcode -->
+    <script src="../js/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/session.js"></script>
 
-  <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 1</title>
+    <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 1</title>
 
-  <style>
-    #nav {
-      background-color: #C5EFF7;
-    }
-  </style>
 </head>
+
 <body>
-  <!-- Start Content -->
-  <!-- Start Navbar -->
-    <nav id="nav">
-      <br/>
-        <div class="row">
-        <div class="col-lg-6">
-          <center>
-            <img src="../img/fitm.png" style="width: 30%; height: 90%;" />
-          </center>
-        </div>
-        <div class="col-lg-6 text-left">
-          <h2>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRcode</h2>
-          <h4>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือวิทยาเขตปราจีนบุรี</h4>
-        </div>
-      </div>
-      <br/>
-    </nav>
-  <!-- End Navbar -->
+    <section class="main-warpper">
+        <div class="header">
 
-  <br/>
-
-  <!-- Start Main -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8">
-        <div class="card">
-          <div class="card-header">
-            เพิ่มข้อมูล
-          </div>
-          <div class="card-body">
-            <form>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="date">วันที่</label>
-                    <input id="date" class="form-control" type="date">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="numreceive">เลขที่รับ</label>
-                    <input id="numreceive" class="form-control" type="number">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="datenow">ลงวันที่ที่</label>
-                    <input id="datenow" class="form-control" type="date">
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="form-group">
-                    <label for="from">จาก</label>
-                    <input id="from" class="form-control" type="text">
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="reach">ถึง</label>
-                      <input id="reach" class="form-control" type="text">
+        </div>
+        <div class="left-sidebar">
+            <nav class="sidebar-nav">
+                <img class="logo-fitm" src="../img/fitm.png" />
+                <div>
+                    <div class="btn btn-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="result"></span>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="subject">เรื่อง</label>
-                      <input id="subject" class="form-control" type="text">
-                    </div>
-                  </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="work">การปฏิบัติ</label>
-                      <input id="work" class="form-control" type="text">
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="note">หมายเหตุ</label>
-                      <input id="note" class="form-control" type="text">
-                    </div>
-                  </div>
+                <ul>
+                    <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
+                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+                    <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
+                </ul>
+            </nav>
+        </div>
+        <div class="page-warpper">
+            <!-- Add Documents -->
+            <div id="add-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="far fa-file-alt" style="font-size: 24px;"></i> เพิ่มเอกสาร
                 </div>
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="status">สถานะ</label>
-                      <input id="status" class="form-control" type="text" value="รับเข้า">
+                <form class="container">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="date">วันที่</label>
+                            <input id="date" class="form-control" type="date" required>
+                            <label for="datenow">ลงวันที่ที่</label>
+                            <input id="datenow" class="form-control" type="date" required>
+                            <label for="reach">ถึง</label>
+                            <input id="reach" class="form-control" type="text" required>
+                            <label for="work">การปฏิบัติ</label>
+                            <input id="work" class="form-control" type="text" required>
+                            <label for="status">สถานะ</label>
+                            <input id="status" class="form-control" type="text" value="รับเข้า" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="numreceive">เลขที่รับ</label>
+                            <input id="numreceive" class="form-control" type="number" required>
+                            <label for="from">จาก</label>
+                            <input id="from" class="form-control" type="text" required>
+                            <label for="subject">เรื่อง</label>
+                            <input id="subject" class="form-control" type="text" required>
+                            <label for="note">หมายเหตุ</label>
+                            <input id="note" class="form-control" type="text" required>
+                            <label for="role">สิทธิ์</label>
+                            <input id="role" class="form-control" type="text" value="user" disabled required>
+                        </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label for="role">สิทธิ์</label>
-                      <input id="role" class="form-control" type="text" value="user">
-                    </div>
-                  </div>
-                </div>
-              <button id="add-data" type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
-              <button type="submit" class="btn btn-danger">ล้างข้อมูล</button>
-            </form>  
-          </div>
-        </div>    
-      </div>
-      <div class="col-lg-4">
-        <!-- Start Userlog -->
-        <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-lg-8">
-                สวัสดี <div id="result"></div>
-              </div>
+                    <br>
+                    <button id="add-data" type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
+                    <button type="reset" class="btn btn-danger">ล้างข้อมูล</button>
+                </form>
             </div>
-          </div> 
-          <div class="card-footer text-center">
-            <button class="btn btn-danger" onclick="logout()">ออกจากระบบ</button>
-          </div>
+            <!-- Status Documents -->
+            <div id="status-documents-content" class="container-fluid form-content">
+                <div class="pagination">
+                    <div class="pagination-page backward"></div>
+                    <div class="pagination-page forward"></div>
+                </div>
+                <div class="pagination-warpper"></div>
+            </div>
         </div>
-        <!-- End Userlog -->
-        
-        <!-- Start GenQRcode -->
-        <div class="card">
-          <div class="card-header">
+
+
+    </section>
+
+    <!-- Start GenQRcode -->
+    <div class="card">
+        <div class="card-header">
             <strong>QRcode Generate</strong>
-          </div>
-          <div class="card-body text-center">
+        </div>
+        <div class="card-body text-center">
             <div id="qrcode"></div>
-          </div>
-          <div class="card-footer text-center">
+        </div>
+        <div class="card-footer text-center">
             <button id="btn-qrcode" class="btn btn-secondary" type="submit">สร้าง QRcode</button>
             <button id="btn-qrcode" class="btn btn-info" onclick="printf()">พิมพ์ QRcode</button>
-          </div>
         </div>
-        <!-- End QRcode -->
-      </div>
     </div>
-  </div>
-  <!-- End Main -->
-  
-  <br/>
-
-  <!-- Start Table -->
-  <div class="container text-center">
-    <table id="ex-table" class="table table-bordered">
-      <thead>
-        <tr>
-          <th>ลำดับ</th>
-          <th>วันที่</th>
-          <th>เลขที่รับ</th>
-          <th>ลงวันที่ที่</th>
-          <th>จาก</th>
-          <th>ถึง</th>
-          <th>เรื่อง</th>
-          <th>การปฏิบัติ</th>
-          <th>หมายเหตุ</th>
-          <th>สถานะเอกสาร</th>
-          <th class="text-center"><i class="fas fa-qrcode" style="font-size: 20px"></i></i></th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <!-- End Table -->
-
-
-  <!-- End Content -->
-
-  <!-- Start qrcode -->
-  <script>
-    var qrcode = new QRCode(document.getElementById("qrcode"));
-    $('#url-qrcode').on('change', function() {
-      qrcode.clear();
-      // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
-      qrcode.makeCode($(this).val());
-    })
-  </script>
-  <!-- End qrcode -->
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-  <script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
-    authDomain: "fitm-system-3.firebaseapp.com",
-    databaseURL: "https://fitm-system-3.firebaseio.com",
-    projectId: "fitm-system-3",
-    storageBucket: "fitm-system-3.appspot.com",
-    messagingSenderId: "1083923833969"
-  };
-  firebase.initializeApp(config);
-
-  var database = firebase.database();
-    document.getElementById("add-data").onclick = function(e) {
-      var date = document.getElementById('date').value;
-      var numreceive = document.getElementById('numreceive').value;
-      var datenow = document.getElementById('datenow').value;
-      var from = document.getElementById('from').value;
-      var reach = document.getElementById('reach').value;
-      var subject = document.getElementById('subject').value;
-      var work = document.getElementById('work').value;
-      var note = document.getElementById('note').value;
-      var status = document.getElementById('status').value;
-      var role = document.getElementById('role').value;
-      var cradit;
-      var addten;
-      var rootRef = firebase.database().ref();
-      var storesRef = rootRef.child('documents/data/');
-      var newStoreRef = storesRef.push();
-        newStoreRef.set({
-          date: date,
-          numreceive: numreceive,
-          datenow: datenow,
-          from: from,
-          reach: reach,
-          subject: subject,
-          work: work,
-          note: note,
-          status: status,
-          role: role
+    <script>
+        var qrcode = new QRCode(document.getElementById("qrcode"));
+        $('#url-qrcode').on('change', function () {
+            qrcode.clear();
+            // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
+            qrcode.makeCode($(this).val());
         });
-      alert("เพิ่มข้อมูลสำเร็จ !");
-      location.reload();
-    }
+        $('#add-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#add-documents-content').show();
+        });
+        $('#status-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#status-documents-content').show();
+        });
+        $('.tab-nav').on('click', function () {
+            $('.tab-nav').removeClass('active');
+            $(this).addClass('active');
+        });
+        document.getElementById("add-data").onclick = function (e) {
+            var date = document.getElementById('date').value;
+            var numreceive = document.getElementById('numreceive').value;
+            var datenow = document.getElementById('datenow').value;
+            var from = document.getElementById('from').value;
+            var reach = document.getElementById('reach').value;
+            var subject = document.getElementById('subject').value;
+            var work = document.getElementById('work').value;
+            var note = document.getElementById('note').value;
+            var status = document.getElementById('status').value;
+            var role = document.getElementById('role').value;
+            var cradit;
+            var addten;
+            var rootRef = firebase.database().ref();
+            var storesRef = rootRef.child('documents/data/');
+            var newStoreRef = storesRef.push();
+            newStoreRef.set({
+                date: date,
+                numreceive: numreceive,
+                datenow: datenow,
+                from: from,
+                reach: reach,
+                subject: subject,
+                work: work,
+                note: note,
+                status: status,
+                role: role
+            });
+            alert("เพิ่มข้อมูลสำเร็จ !");
+            location.reload();
+        }
 
-  database.ref("documents").once('child_added', function(snapshot) {
-  //ดึงnode users
-    if(snapshot.exists()) {
-    var content = '';
-    var i = 1;
-      snapshot.forEach(function(data) {
-        var val = data.val();
-          // console.log("row",data.val());
-          content +='<tr>';
-          content += '<td>' + i + '</td>';
-          content += '<td>' + val.date + '</td>';
-          content += '<td>' + val.numreceive + '</td>';
-          content += '<td>' + val.datenow + '</td>';
-          content += '<td>' + val.from + '</td>';
-          content += '<td>' + val.reach + '</td>';
-          content += '<td>' + val.subject + '</td>';
-          content += '<td>' + val.work + '</td>';
-          content += '<td>' + val.note + '</td>';
-          content += '<td>' + val.status + '</td>';
-          content += '<td> <input type="checkbox" class="form-check-input" value="'+ val.numreceive +'"> </td>';
-          content += '</tr>';
-          i++;
-      });
-    var theDiv = document.getElementById("ex-table");
-    theDiv.innerHTML += content;
-    }
-  });
+        database.ref("documents").once('child_added', function (snapshot) {
+            //ดึงnode users
+            if (snapshot.exists()) {
+                var content = '';
+                var i = 1;
+                snapshot.forEach(function (data) {
+                    var val = data.val();
+                    // console.log("row",data.val());
+                    content += '<tr>';
+                    content += '<td>' + i + '</td>';
+                    content += '<td>' + val.date + '</td>';
+                    content += '<td>' + val.numreceive + '</td>';
+                    content += '<td>' + val.datenow + '</td>';
+                    content += '<td>' + val.from + '</td>';
+                    content += '<td>' + val.reach + '</td>';
+                    content += '<td>' + val.subject + '</td>';
+                    content += '<td>' + val.work + '</td>';
+                    content += '<td>' + val.note + '</td>';
+                    content += '<td>' + val.status + '</td>';
+                    content += '<td> <input type="checkbox" class="form-check-input" value="' + val.numreceive +
+                        '"> </td>';
+                    content += '</tr>';
+                    i++;
+                });
+                var theDiv = document.getElementById("ex-table");
+                theDiv.innerHTML += content;
+            }
+        });
 
-  // qrcode
-  $('#btn-qrcode').on('click', function() {
-    qrcode.clear();
-      let elem = $('.form-check-input:checked'),
-      txt = 'https://fitm-system-3.firebaseapp.com/admin2/logadmin2.html?docs=';
-      for(let i=0; i<$('.form-check-input:checked').length; i++) {
-      txt += $(elem[i]).val() + ',';
-    }
-    qrcode.makeCode(txt);
-  });
-
-  // printf
-  function printf() {
-    window.print();
-  }
-
-  // session
-  var userId = localStorage.getItem("session");
-  // alert(userId);
-  firebase.database().ref('users/data/' + userId).once('value')
-  .then(function(snapshot) {
-    $("#result").text(snapshot.val().name);
-  });
-
-  // logout
-  function logout() {
-    localStorage.removeItem("session");
-    window.location.href = "../login.html";
-  }
-  </script>
+        // qrcode
+        $('#btn-qrcode').on('click', function () {
+            qrcode.clear();
+            let elem = $('.form-check-input:checked'),
+                txt = 'https://fitm-system-3.firebaseapp.com/admin2/logadmin2.html?docs=';
+            for (let i = 0; i < $('.form-check-input:checked').length; i++) {
+                txt += $(elem[i]).val() + ',';
+            }
+            qrcode.makeCode(txt);
+        });
+    </script>
 </body>
+
 </html>
