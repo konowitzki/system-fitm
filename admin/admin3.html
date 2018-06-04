@@ -273,7 +273,7 @@
             alert("เพิ่มข้อมูลสำเร็จ !");
         });
 
-        database.ref("backup").once('child_added', function (snapshot) {
+        database.ref("documents/data").once('child_added', function (snapshot) {
             //ดึงnode users
             if (snapshot.exists()) {
                 var content = '';

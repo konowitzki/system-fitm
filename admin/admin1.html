@@ -122,12 +122,99 @@
             <button id="btn-qrcode" class="btn btn-info" onclick="printf()">พิมพ์ QRcode</button>
         </div>
     </div>
+<<<<<<< HEAD
     <script>
         var qrcode = new QRCode(document.getElementById("qrcode"));
         $('#url-qrcode').on('change', function () {
             qrcode.clear();
             // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
             qrcode.makeCode($(this).val());
+=======
+  </div>
+  <!-- End Main -->
+  
+  <br/>
+
+  <!-- Start Table -->
+  <div class="container text-center">
+    <table id="ex-table" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ลำดับ</th>
+          <th>วันที่</th>
+          <th>เลขที่รับ</th>
+          <th>ลงวันที่ที่</th>
+          <th>จาก</th>
+          <th>ถึง</th>
+          <th>เรื่อง</th>
+          <th>การปฏิบัติ</th>
+          <th>หมายเหตุ</th>
+          <th>สถานะเอกสาร</th>
+          <th class="text-center"><i class="fas fa-qrcode" style="font-size: 20px"></i></i></th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <!-- End Table -->
+
+
+  <!-- End Content -->
+
+  <!-- Start qrcode -->
+  <script>
+    var qrcode = new QRCode(document.getElementById("qrcode"));
+    $('#url-qrcode').on('change', function() {
+      qrcode.clear();
+      // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
+      qrcode.makeCode($(this).val());
+    })
+  </script>
+  <!-- End qrcode -->
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
+    authDomain: "fitm-system-3.firebaseapp.com",
+    databaseURL: "https://fitm-system-3.firebaseio.com",
+    projectId: "fitm-system-3",
+    storageBucket: "fitm-system-3.appspot.com",
+    messagingSenderId: "1083923833969"
+  };
+  firebase.initializeApp(config);
+
+  var database = firebase.database();
+    document.getElementById("add-data").onclick = function(e) {
+      var date = document.getElementById('date').value;
+      var numreceive = document.getElementById('numreceive').value;
+      var datenow = document.getElementById('datenow').value;
+      var from = document.getElementById('from').value;
+      var reach = document.getElementById('reach').value;
+      var subject = document.getElementById('subject').value;
+      var work = document.getElementById('work').value;
+      var note = document.getElementById('note').value;
+      var status = document.getElementById('status').value;
+      var role = document.getElementById('role').value;
+      var cradit;
+      var addten;
+      var rootRef = firebase.database().ref();
+      var storesRef = rootRef.child('documents/data/');
+      var newStoreRef = storesRef.push();
+        newStoreRef.set({
+          date: date,
+          numreceive: numreceive,
+          datenow: datenow,
+          from: from,
+          reach: reach,
+          subject: subject,
+          work: work,
+          note: note,
+          status: status,
+          role: role,
+          cradit,
+          addten
+>>>>>>> f5031dbe4efc02fe247ac79831cc4b2de45f53df
         });
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
