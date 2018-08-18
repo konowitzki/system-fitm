@@ -42,13 +42,13 @@
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
-                    <li id="v-pills-other-tab" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
+                    <li id="search-documents" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
         </div>
         <div class="page-warpper">
-            <!-- Add Documents -->
+            <!-- Start Add Documents -->
             <div id="add-documents-content" class="container-fluid form-content">
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="far fa-file-alt" style="font-size: 24px;"></i> เพิ่มเอกสาร
@@ -85,8 +85,13 @@
                     <button type="reset" class="btn btn-danger">ล้างข้อมูล</button>
                 </form>
             </div>
-            <!-- Status Documents -->
+            <!-- End Add Documents -->
+
+            <!-- Start Status Documents -->
             <div id="status-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
+                </div>
                 <input type="text" />
                 <div class="pagination">
                     <div class="pagination-page backward"></div>
@@ -94,10 +99,12 @@
                 </div>
                 <div class="pagination-warpper"></div>
             </div>
-            <!-- Save Documents -->
+            <!-- End Status Documents -->
+
+            <!-- Start Save Documents -->
             <div id="save-documents-content" class="container-fluid form-content">
                 <div style="margin: 8px 2px;font-size: 20px;">
-                    <i class="far fa-file-alt" style="font-size: 24px;"></i> เก็บเอกสาร
+                    <i class="far fa-save" style="font-size: 24px;"></i> เก็บเอกสาร
                 </div>
                 <form class="container">
                     <div class="row">
@@ -141,6 +148,22 @@
                     </thead>
                 </table>
             </div>
+            <!-- End Save Documents -->
+
+            <!-- Start Search Documents -->
+            <div id="search-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-search" style="font-size: 24px;"></i> สืบค้นเอกสารย้อนหลัง
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control">
+                <div class="input-group-append">
+                <button class="btn btn-success" type="submit">ค้นหา</button> 
+                </div>
+            </div>
+                <div class="pagination-warpper-search"></div>
+            </div>
+            <!-- End Search Documents -->
         </div>
     </section>
 
@@ -156,6 +179,10 @@
         $('#save-documents').on('click', function () {
             $('.form-content').hide();
             $('#save-documents-content').show();
+        });
+        $('#search-documents').on('click', function () {
+            $('.form-content').hide();
+            $('#search-documents-content').show();
         });
         $('.tab-nav').on('click', function () {
             $('.tab-nav').removeClass('active');
@@ -403,6 +430,60 @@
                 console.log("Remove Failed" + error.message);
             });
         }
+
+        // Search Documents
+        database.ref("documents").once('child_added', function (snapshot) {
+            //ดึงnode users
+            if (snapshot.exists()) {
+                var content = '';
+                let i = 0,
+                    page = 0,
+                    interval = 5;
+                snapshot.forEach(function (data) {
+                    let val = data.val();
+                    content += '<tr>';
+                    content += '<td>' + val.numreceive + '</td>';
+                    content +=
+                        `<td><h5>${val.subject}</h5>
+                        <small>${val.date}</small>
+                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
+                        </td>`;
+                    content +=
+                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                        data.key + '")">' + val.status + '</button></td>';
+                    // เริ่ม ติด Check Box
+                    content += '<td class="text-center"><div class="form-check-input" tpye="checkbox" value="0">' + 
+                            '</div></td>';
+                    // ปิด ติด Check Box
+                    content += '</tr>';
+                    i++;
+                });
+                if (i % interval !== 0) {
+                    let pagContent = $('<div class="pagination-content-search"></div>');
+                    let table = $('<table class="table table-bordered"></table>');
+                    let thead = $('<thead></thead>');
+                    let tr = $('<tr class="text-center"></tr>');
+                    let th = $(
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>ดาวน์โหลด</th>'
+                    );
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, content));
+                    $('.pagination-warpper-search').append(pagContent);
+                    content = '';
+                }
+            }
+        }).then(function () {
+            $('.pagination-content').hide();
+            $($('.pagination-content')[0]).show();
+            $($('.pagination-page')[1]).addClass('active');
+            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                let index = $(this).text() - 1;
+                $('.pagination-page').removeClass('active');
+                $(this).addClass('active');
+                $('.pagination-content').hide();
+                $($('.pagination-content')[index]).show();
+            });
+        });
     </script>
 </body>
 
