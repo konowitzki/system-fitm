@@ -96,11 +96,15 @@
             </div>
             <!-- End Status Documents -->
 
+            <!-- Start Add QRcode Content -->
             <div id="add-qrcode-content" class="container-fluid form-content">
-                <div class="pagination">
-                   D
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> เพิ่มคิวอาร์โค้ด
                 </div>
+                <div class="qr"></div>
+                <div class="pagination-warpper-qr"></div>
             </div>
+            <!-- End Add QRcode Content -->
         </div>
 
     </section>
@@ -165,7 +169,7 @@
                 addten: ''
             });
         });
-        //  Pagination Data
+        //  Pagination Data Status-Content
         database.ref("documents").once('child_added', function (snapshot) {
             //ดึงnode users
             if (snapshot.exists()) {
@@ -223,6 +227,60 @@
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));
                     $('.pagination-warpper').append(pagContent);
+                    content = '';
+                }
+            }
+        }).then(function () {
+            $('.pagination-content').hide();
+            $($('.pagination-content')[0]).show();
+            $($('.pagination-page')[1]).addClass('active');
+            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                let index = $(this).text() - 1;
+                $('.pagination-page').removeClass('active');
+                $(this).addClass('active');
+                $('.pagination-content').hide();
+                $($('.pagination-content')[index]).show();
+            });
+        });
+
+        //  Pagination Data Add-Qrcode-Content
+        database.ref("documents").once('child_added', function (snapshot) {
+            //ดึงnode users
+            if (snapshot.exists()) {
+                var content = '';
+                let i = 0,
+                    page = 0,
+                    interval = 5;
+                snapshot.forEach(function (data) {
+                    let val = data.val();
+                    content += '<tr>';
+                    content += '<td>' + val.numreceive + '</td>';
+                    content +=
+                        `<td><h5>${val.subject}</h5>
+                        <small>${val.date}</small>
+                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
+                        </td>`;
+                    content +=
+                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                        data.key + '")">' + val.status + '</button></td>';
+                    // เริ่ม ติด Check Box
+                    content += '<td class="text-center"><div class="form-check-input" tpye="checkbox" value="0">' + 
+                            '</div></td>';
+                    // ปิด ติด Check Box
+                    content += '</tr>';
+                    i++;
+                });
+                if (i % interval !== 0) {
+                    let pagContent = $('<div class="pagination-content-qr"></div>');
+                    let table = $('<table class="table table-bordered"></table>');
+                    let thead = $('<thead></thead>');
+                    let tr = $('<tr class="text-center"></tr>');
+                    let th = $(
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>เลือก</th>'
+                    );
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, content));
+                    $('.pagination-warpper-qr').append(pagContent);
                     content = '';
                 }
             }
