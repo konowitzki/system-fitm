@@ -96,8 +96,10 @@
             </div>
             <!-- End Status Documents -->
 
-            <div id="add-qrcode" class="container-fluid form-content">
-                dDDD
+            <div id="add-qrcode-content" class="container-fluid form-content">
+                <div class="pagination">
+                   D
+                </div>
             </div>
         </div>
 
@@ -130,6 +132,10 @@
         $('#status-documents').on('click', function () {
             $('.form-content').hide();
             $('#status-documents-content').show();
+        });
+        $('#add-qrcode').on('click', function () {
+            $('.form-content').hide();
+            $('#add-qrcode-content').show();
         });
         $('.tab-nav').on('click', function () {
             $('.tab-nav').removeClass('active');
