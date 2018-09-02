@@ -168,6 +168,9 @@
     </section>
 
     <script>
+        $('#add-documents-content').show();
+        $('#add-documents').addClass('active');
+
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
             $('#add-documents-content').show();
@@ -242,7 +245,7 @@
                     let thead = $('<thead></thead>');
                     let tr = $('<tr class="text-center"></tr>');
                     let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th><th>ผู้ใช้</th><th>ลบ</th>'
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th><th>ผู้ใช้</th>'
                     );
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));

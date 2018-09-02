@@ -48,6 +48,7 @@
                 </div>
                 <ul>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+                    <li><div id="qrcode" align="center"></div></li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -79,14 +80,7 @@
         </div>
     </div> -->
     <!-- Start qrcode -->
-    <script>
-        var qrcode = new QRCode(document.getElementById("qrcode"));
-        $('#url-qrcode').on('change', function () {
-            qrcode.clear();
-            // qrcode = new QRCode(document.getElementById("qrcode"), $(this).val());
-            qrcode.makeCode($(this).val());
-        })
-    </script>
+    
 
     <script>
         //  Pagination Data
@@ -108,7 +102,8 @@
                         </td>`;
                     content += '<td>' + val.work + '</td>';
                     content += '<td>' + val.note + '</td>';
-                    content += '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                    content +=
+                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                         data.key + '")">' + val.status + '</button></td>';
                     content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
                         '</div></td>';
@@ -141,8 +136,8 @@
                     let thead = $('<thead></thead>');
                     let tr = $('<tr class="text-center"></tr>');
                     let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                    );
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                        );
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));
                     $('.pagination-warpper').append(pagContent);
@@ -186,16 +181,8 @@
             });
         });
 
-        // qrcode
-        $('#btn-qrcode').on('click', function () {
-            qrcode.clear();
-            let elem = $('.form-check-input:checked'),
-                txt = 'https://fitm-system-3.firebaseapp.com/admin3/admin3.html?docs=';
-            for (let i = 0; i < $('.form-check-input:checked').length; i++) {
-                txt += $(elem[i]).val() + ',';
-            }
-            qrcode.makeCode(txt);
-        });
+        
     </script>
 </body>
+
 </html>
