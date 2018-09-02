@@ -190,6 +190,37 @@
                     $($('.pagination-content')[index]).show();
                 });
                 col = $('.ex-table tr').not(':first-child');
+
+                // Get data From URL
+                var search_params = new URLSearchParams(window.location.search);
+                var docs = search_params.get('docs');
+                //if(docs)
+                console.log(docs);
+                console.log(col);
+
+                docs = docs.split(',');
+                console.log(docs);
+
+                let data = [];
+                let txt = null;
+                console.log(col);
+                for (let a = 0; a < docs.length; a++) {
+                    let find = new RegExp('(?:' + docs[a] + ')', 'g');
+                    for (let i = 0; i < col.length; i++) {
+                        txt = $(col[i]).text();
+                        if (find.test(txt)) {
+                            data.push(col[i]);
+                        }
+                    }
+                }
+                if (data.length === 0) {
+                    $('.pagination-page').remove();
+                    $('.pagination-content').remove();
+                    let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                    $('.pagination-warpper').append(detail);
+                } else {
+                    pagUpdate(data);
+                }
             });
 
             function pagUpdate(data) {
@@ -255,16 +286,8 @@
                 }
 
             });
+
         })();
-
-        (function () {
-            var search_params = new URLSearchParams(window.location.search);
-            var docs = search_params.get('docs');
-            //if(docs)
-            console.log(docs);
-        })();
-
-
         //  Pagination Data
     </script>
 </body>
