@@ -1,4 +1,4 @@
-// Initialize Firebase
+// TODO: Initialize Firebase
 var config = {
     apiKey: "AIzaSyBqxqnlvnDeucySAakhZ_OvU-D5s9tTLSU",
     authDomain: "fitm-system-3.firebaseapp.com",
