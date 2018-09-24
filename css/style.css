@@ -1,98 +1,113 @@
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 #result {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 i.fas.fa-user-circle {
-    font-size: 50px;
+  font-size: 50px;
 }
 
 .logo-fitm {
-    width: auto;
-    height: auto;
+  width: auto;
+  height: auto;
 }
 
-table>thead>tr>th {
-    background: #fff;
+table > thead > tr > th {
+  background: #fff;
 }
 
 table * {
-    background: #f1f2f6;
-    cursor: default;
-    user-select: none;
+  background: #f1f2f6;
+  cursor: default;
+  user-select: none;
 }
 
 body {
-    background: #c8d6e5;
-    color: #000;
+  background: #c8d6e5;
+  color: #000;
 }
 
 * {
-    font-family: 'Trirong', serif;
-    font-size: 16px;
+  font-family: "Trirong", serif;
+  font-size: 16px;
 }
 
 section.main-warpper {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .left-sidebar {
-    padding: 0;
-    margin: 0;
-    width: 240px;
-    height: 100%;
-    background: #fff;
-    float: left;
+  padding: 0;
+  margin: 0;
+  width: 240px;
+  height: 100%;
+  background: #fff;
+  float: left;
 }
 
 .sidebar-nav ul {
-    padding: 0;
-    margin: 0
+  padding: 0;
+  margin: 0;
 }
 
 .sidebar-nav ul li {
-    padding: 5px 15px;
-    list-style: none;
+  padding: 5px 15px;
+  list-style: none;
 }
-.sidebar-nav ul .label-nav{
-    padding: 7px 35px;
+.sidebar-nav ul .label-nav {
+  padding: 7px 35px;
 }
-.sidebar-nav ul li.tab-nav:not(.active):hover{
-    background: #bdc3c7;
-    cursor: pointer;
+.sidebar-nav ul li.tab-nav:not(.active):hover {
+  background: #bdc3c7;
+  cursor: pointer;
 }
-.page-warpper{
-    float: left;
-    width: calc(100% - 240px);
-    height: 100%;
-    background: #fafafa;
+.page-warpper {
+  float: left;
+  width: calc(100% - 240px);
+  height: 100%;
+  background: #fafafa;
 }
-.tab-nav.active{
-    background: #3498db;
-    color: #fff;
+.tab-nav.active {
+  background: #3498db;
+  color: #fff;
 }
-.tab-nav.active:hover{
-    background: #2980b9;
-    cursor: pointer;
+.tab-nav.active:hover {
+  background: #2980b9;
+  cursor: pointer;
 }
 
 .form-content {
-    display: none;
+  display: none;
 }
 
 .btn-logout {
-    margin-top: 100px;
-    text-align: center;
-    color: #fff;
-    background: #dc3545;
-    cursor: pointer;
+  margin-top: 100px;
+  text-align: center;
+  color: #fff;
+  background: #dc3545;
+  cursor: pointer;
 }
-
+.select-user {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 500px;
+  border-radius: 5px;
+  position: fixed;
+  background-color: #fefefe;
+  padding: 15px 30px;
+}
+.select-user > div > div{
+    background: #fafafa;
+    padding: 5px 7px;
+    border: 1px solid #bdc3c7;
+}
 /*
 #3DB5E0
 #1083C4
@@ -104,43 +119,43 @@ section.main-warpper {
 /* Pagination */
 
 .pagination {
-    display: inline-block;
+  display: inline-block;
 }
 
-.pagination>.pagination-page {
-    font-family: Arial, Helvetica, sans-serif;
-    float: left;
-    padding: 8px 16px;
-    margin: 2px 1px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
+.pagination > .pagination-page {
+  font-family: Arial, Helvetica, sans-serif;
+  float: left;
+  padding: 8px 16px;
+  margin: 2px 1px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
 }
 
-.pagination>.pagination-page:hover {
-    background: #c8d6e5;
+.pagination > .pagination-page:hover {
+  background: #c8d6e5;
 }
 
-.pagination>.pagination-page.active {
-    color: #fff;
-    background: #54a0ff;
+.pagination > .pagination-page.active {
+  color: #fff;
+  background: #54a0ff;
 }
 
-.pagination>.pagination-page.active:hover {
-    background: #2e86de;
+.pagination > .pagination-page.active:hover {
+  background: #2e86de;
 }
 
-.pagination>.pagination-page.backward::before{
-    content: '<';
+.pagination > .pagination-page.backward::before {
+  content: "<";
 }
-.pagination>.pagination-page.forward::before{
-    content: '>';
+.pagination > .pagination-page.forward::before {
+  content: ">";
 }
 
-.pagination-warpper{
-    padding: 4px 8px;
+.pagination-warpper {
+  padding: 4px 8px;
 }
-.pagination-content{
-    display: block;
+.pagination-content {
+  display: block;
 }

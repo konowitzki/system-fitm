@@ -169,6 +169,15 @@
         </div>
     </section>
 
+    <section class="select-user" style="display:none;">
+        <span>เลือกผู้รับ</span>
+        <div style="overflow-y: scroll;"></div>
+        <div>
+            <input class="send-doc" type="button" value="Send">
+            <input class="cancel" type="button" value="Cancel">
+        </div>
+    </section>
+
     <script>
         $('#add-documents-content').show();
         $('#add-documents').addClass('active');
@@ -260,12 +269,31 @@
                 onSubmit($(this).val());
                 console.log($(this).val());
             });
+            let docId;
             $('.btn-send').on('click', function () {
-                onSend($(this).val());
-                let txt = 'https://fitm-system-3.firebaseapp.com/admin3/selectUser.html?docs=' + $(this)
-                    .val();
-                window.location.href = txt;
-                console.log($(this).val());
+                // FIXME: Select User for send Doc
+                $('.select-user').show();
+                docId = $(this).val();
+            });
+            $('.send-doc').on('click', function () {
+                sendDoc(docId);
+                $('.select-user').hide();
+                $('.uid:checked').prop("checked");
+                docId = '';
+            });
+            $('.cancel').on('click', function () {
+                $('.select-user').hide();
+                $('.uid:checked').prop("checked");
+                docId = '';
+            });
+            database.ref("users/data").once("value", function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    if (childData.isAdmin === 'user') {
+                        $('.select-user > div').first().append('<div><label>' + childData.name + '<input class="uid" type="checkbox" value="' + childKey + '"></label></div>');
+                    }
+                });
             });
             $('.pagination-content').hide();
             $($('.pagination-content')[0]).show();
@@ -276,7 +304,6 @@
                 $(this).addClass('active');
                 $('.pagination-content').hide();
                 $($('.pagination-content')[index]).show();
-
             });
         });
         var storage = firebase.storage();
@@ -504,22 +531,41 @@
             });
         }
 
-        // Start onSend
-        function onSend(uid) {
-            var updates = {};
-            firebase.database().ref('users/data/' + uid).once('value').then(function (snapshot) {
-                var data = snapshot.val();
-                updates["users/data/" + uid] = {
-                    email: data.email,
-                    isAdmin: data.user,
-                    name: data.name,
-                    password: data.password
-                };
-                firebase.database().ref().update(updates);
-                location.reload();
-            });
+        // TODO: Send Document to Users
+        function sendDoc(uid) {
+            let users = $('.uid:checked');
+            for (let i = 0; i < users.length; i++) {
+                var updates = {}, updateData;
+                database.ref('users/data/' + $(users[i]).val() ).once('value').then(function (snapshot) {
+                    var data = snapshot.val();
+                    console.log(data);
+                    console.log($(users[i]).val())
+                    if (data.document === '' || data.document === undefined) {
+                        updates[$(users[i]).val()] = {
+                            email: data.email,
+                            isAdmin: data.isAdmin,
+                            name: data.name,
+                            password: data.password,
+                            document: uid
+                        };
+                    } else {
+                        updates[$(users[i]).val()] = {
+                            email: data.email,
+                            isAdmin: data.isAdmin,
+                            name: data.name,
+                            password: data.password,
+                            document: data.document + ',' + uid
+                        };
+                    }
+                    dbRef.child('users/data/').update(updates);
+                    location.reload();
+                }).then(function(){
+                    console.log("Then");
+                    console.log($(users[i]).val());
+                    console.log(updates[$(users[i]).val()]);
+                });
+            }
         }
-
         // Delete User
         function delRemove(uid) {
             let firebaseRef = database.ref("documents/data/" + uid);
