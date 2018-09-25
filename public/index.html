@@ -1,84 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
-    <!-- Script -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
-    <!-- Firebase -->
-    <script src="../js/qrcode.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
-    <script src="js/config.js"></script>
-
-    <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/login.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <!-- Script -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+  <script src="js/config.js"></script>
+  
+  <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode</title>
 </head>
-
 <body>
-    <div class="header" style="background: #fff;">
-        <img class="logo-fitm" src="./img/fitm.png" style="height: 100px;margin: 8px 16px;"/>
-        <div style="float: right;margin: 35px 16px;">
-            <a class="btn btn-primary" href="login.html">
-                <i class="fas fa-user-circle" style="font-size: 16px;"></i>
-                เข้าสู่ระบบ
-            </a>
-        </div>
-    </div>
-    <div class="container-fluid" style="margin-top: 30px;">
-        <div class="row">
-            <div class="col-lg-4 text-center">
-                <h4>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRcode</h4>
-                <h5>มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือวิทยาเขตปราจีนบุรี</h5>
-                <div id="qrcode" align="center"></div>
-            </div>
-            <div class="container text-center col-lg-8">
-                <table id="main-table" class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>ชื่อเรื่อง</th>
-                            <th>สถานะ</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
+  <div class="container">
+    <form class="form-signin" method="post">
+      <center>
+        <img class="mb-4" src="./img/fitm.png" alt="" width="90%" height="90%">
+        <h1 class="h3 mb-3 font-weight-normal">กรุณาเข้าสู่ระบบ</h1>
+      </center>
 
-    <script>
-        // ดึงข้อมูล
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode table
-            if (snapshot.exists()) {
-                var content = '';
-                var i = 1;
-                snapshot.forEach(function (data) {
-                    var val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + i + '</td>';
-                    content += '<td>' + val.subject + '</td>';
-                    content += '<td>' + val.status + '</td>';
-                    content += '</tr>';
-                    i++;
-                });
-                var theDiv = document.getElementById("main-table");
-                theDiv.innerHTML += content;
+      <div class="input-group">
+        <div class="input-group-prepend" >
+          <span class="input-group-text"><i class="fas fa-user-circle" style="font-size: 16px"></i></span>
+        </div>
+        <input type="email" id="email" name="email" class="form-control" placeholder="อีเมล์" required autofocus autocomplete="off">
+      </div>
+
+      <div class="input-group" style="margin-top: 5px;">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+        </div>
+        <input type="password" id="pwd" name="pwd" class="form-control" placeholder="รหัสผ่าน" required>
+      </div>
+
+      <div class="checkbox mb-3">
+          <label>
+              <input type="checkbox" value="remember-me"> จำรหัสผ่าน
+          </label>
+        </div>
+        <button id="signin" class="btn btn-lg btn-primary btn-block" type="submit">เข้าสู่ระบบ</button>
+        <center>
+          <a class="mt-5 mb-3 text-muted" href="./index.html">กลับ</a>
+          <p class="mt-5 mb-3 text-muted">Copyright &copy; 2017 Kittapas & Rattanentorn</p>
+        </center>
+    </form>
+  </div>
+
+  <script>
+
+  var page = 0;
+  var isAdmin = null;
+    document.getElementById("signin").onclick = function(e) {
+      e.preventDefault();
+      handleSignUp();
+    }
+
+    function handleSignUp() {
+      var errors = document.getElementById('errors');
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('pwd').value;
+      var warnings = "";
+      let check = 'users/data/';
+
+      firebase.database().ref(check).once('value', function(snapshot) {
+        let childData, childKey;
+          snapshot.forEach(function(childSnapshot) {
+          // childKey = childSnapshot.key;
+          childData = childSnapshot.val();
+          console.log(childData);
+
+          if( childData.email === email && childData.password === password ) {
+            if( childData.isAdmin === "rootadmin") {
+              page = 1;
+            } else if ( childData.isAdmin === "admin1") {
+              page = 2;
+            } else if (childData.isAdmin === "admin2") {
+              page = 3;
+            } else if (childData.isAdmin === "admin3") {
+              page = 4;
+            } else if (childData.isAdmin === "user") {
+              page = 5;
             }
+            childKey = childSnapshot.key;
+          } 
         });
-    </script>
-</body>
+        // console.log(page);
+        session = childKey;
+        localStorage.session = session;
 
+        switch(page) {
+        case 1:
+          window.location.href = "./rootadmin/root.html";
+          localStorage.setItem("lastname", data.key);
+          document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+        break;
+        case 2:
+          window.location.href = "./admin/admin1.html";
+        break;
+        case 3:
+          window.location.href = "./admin/admin2.html";
+        break;
+        case 4:
+          window.location.href = "./admin/admin3.html";
+        break; 
+        case 5:
+          window.location.href = "./user/user.html";
+        break;
+        default :
+          alert("กรุณาระบุ email & password ให้ถูกต้อง");
+          //window.location.href = "login.html";
+        }
+      });
+    }
+  </script>
+</body>
 </html>

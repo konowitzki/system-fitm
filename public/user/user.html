@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <!-- Start security -->
+    <!-- <script>
+        var local = localStorage.getItem("session");
+        if (local === "undefined" || local === null) {
+            window.location.href = "../login.html";
+        }
+    </script> -->
+    <!-- End security -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,40 +27,40 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
         crossorigin="anonymous"></script>
-
+    <!-- QRcode -->
+    <script src="../js/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/session.js"></script>
+
     <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : สมาชิก</title>
 </head>
 
 <body>
-
     <section class="main-warpper">
-        <div class="header">
-            <img class="logo-fitm" src="../img/fitm.png" style="height: 100px;margin: 8px 16px;" />
-                <div style="float: right;margin: 35px 16px;">
-                    <div class="btn btn-info">
-                        <i class="fas fa-user-circle" style="font-size: 16px;"></i>
-                        <span id="result"></span>
-                    </div>
-                </div>
-            <div>
-            </div>
-        </div>
         <div class="left-sidebar">
             <nav class="sidebar-nav">
+                <img class="logo-fitm" src="../img/fitm.png" />
+                <div class="text-center" style="margin-top: 5px;">
+                    <i class="fas fa-user-circle"></i>
+                    <br>
+                    <span id="result"></span>
+                </div>
                 <ul>
-                    <li class="label-nav">หน้าหลัก</li>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+                    <li>
+                        <div id="qrcode" align="center"></div>
+                    </li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
         </div>
-
         <div class="page-warpper">
             <!-- Status Documents -->
             <div id="status-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
+                </div>
                 <div class="pagination">
                     <div class="pagination-page backward"></div>
                     <div class="pagination-page forward"></div>
@@ -61,35 +69,66 @@
             </div>
         </div>
     </section>
-    
     <script>
-        $('#status-documents').on('click', function () {
-            $('.form-content').hide();
-            $('#status-documents-content').show();
-        });
-        //  Pagination Data
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                snapshot.forEach(function (data) {
-                    let val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + val.numreceive + '</td>';
-                    content +=
-                        `<td><h5>${val.subject}</h5>
+        let doc;
+        database.ref('users/data/' + userId).once('value').then(function (snapshot) {
+            var data = snapshot.val();
+            if (data.document === '' || data.document === undefined) {
+                //console.log(data.document)
+                return false;
+            } else {
+                doc = data.document.split(',');
+                //console.log(doc)
+            }
+        }).then(function () {
+            //  Pagination Data
+            database.ref("documents").once('child_added', function (snapshot) {
+                //ดึงnode users
+                if (snapshot.exists()) {
+                    var content = '';
+                    let i = 0,
+                        page = 0,
+                        interval = 5;
+                    snapshot.forEach(function (data) {
+                        let key = data.key;
+                        let val = data.val();
+                        for (let x = 0; x < doc.length; x++) {
+                            if (doc[x] === key) {
+                                content += '<tr>';
+                                content += '<td>' + val.numreceive + '</td>';
+                                content +=
+                                    `<td><h5>${val.subject}</h5>
                         <small>${val.date}</small>
                         <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
                         </td>`;
-                    content += '<td>' + val.work + '</td>';
-                    content += '<td>' + val.note + '</td>';
-                    content += '<td> <div class="btn btn-danger">' + val.status + '</div></td>';
-                    content += '</tr>';
-                    i++;
-                    if (i % interval === 0) {
+                                content += '<td>' + val.work + '</td>';
+                                content += '<td>' + val.note + '</td>';
+                                content +=
+                                    '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                                    data.key + '")">' + val.status + '</button></td>';
+                                content += '</tr>';
+                                i++;
+                                if (i % interval === 0) {
+                                    page++;
+                                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                                        '.pagination-page.forward');
+                                    let pagContent = $('<div class="pagination-content"></div>');
+                                    let table = $('<table class="table table-bordered"></table>');
+                                    let thead = $('<thead></thead>');
+                                    let tr = $('<tr class="text-center"></tr>');
+                                    let th = $(
+                                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
+                                    );
+                                    thead.append(tr.append(th));
+                                    pagContent.append(table.append(thead, content));
+                                    $('.pagination-warpper').append(pagContent);
+                                    content = '';
+                                    console.log(i);
+                                }
+                            }
+                        }
+                    });
+                    if (i % interval !== 0) {
                         page++;
                         $('<div class="pagination-page">' + page + '</div>').insertBefore(
                             '.pagination-page.forward');
@@ -104,43 +143,25 @@
                         pagContent.append(table.append(thead, content));
                         $('.pagination-warpper').append(pagContent);
                         content = '';
-                        console.log(i);
                     }
-                });
-                if (i % interval !== 0) {
-                    page++;
-                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                        '.pagination-page.forward');
-                    let pagContent = $('<div class="pagination-content"></div>');
-                    let table = $('<table class="table table-bordered"></table>');
-                    let thead = $('<thead></thead>');
-                    let tr = $('<tr class="text-center"></tr>');
-                    let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
-                    );
-                    thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
-                    $('.pagination-warpper').append(pagContent);
-                    content = '';
                 }
-                /*
-                var theDiv = document.getElementById("status-table");
-                theDiv.innerHTML += content;
-                */
-            }
-        }).then(function () {
-            $('.pagination-content').hide();
-            $($('.pagination-content')[0]).show();
-            $($('.pagination-page')[1]).addClass('active');
-            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                let index = $(this).text() - 1;
-                $('.pagination-page').removeClass('active');
-                $(this).addClass('active');
+            }).then(function () {
                 $('.pagination-content').hide();
-                $($('.pagination-content')[index]).show();
-
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[1]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+                $('#status-documents-content').show();
             });
         });
+
+
+
     </script>
 </body>
 
