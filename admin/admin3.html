@@ -56,9 +56,9 @@
                 <form class="container">
                     <div class="row">
                         <div class="col-6">
-                            <label for="date">วันที่</label>
+                            <label for="date">วันที่รับเรื่อง</label>
                             <input id="date" class="form-control" type="date" required>
-                            <label for="datenow">ลงวันที่ที่</label>
+                            <label for="datenow">ลงวันที่</label>
                             <input id="datenow" class="form-control" type="date" required>
                             <label for="reach">ถึง</label>
                             <input id="reach" class="form-control" type="text" required>
@@ -69,13 +69,21 @@
                         </div>
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
-                            <input id="numreceive" class="form-control" type="number" required>
+                            <input id="numreceive" class="form-control" type="text" required>
+                            <label for="from">เลขที่เอกสาร</label>
+                            <input id="from" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
                             <input id="subject" class="form-control" type="text" required>
-                            <label for="note">หมายเหตุ</label>
-                            <input id="note" class="form-control" type="text" required>
+                            <div class="form-group">
+                                <label for="note">หมายเหตุ</label>
+                                    <select class="form-control" id="note">
+                                        <option>ปกติ</option>
+                                        <option>ด่วน</option>
+                                        <option>ด่วนที่สุด</option>
+                                    </select>
+                            </div>
                             <label for="role">สิทธิ์</label>
                             <input id="role" class="form-control" type="text" value="user" disabled required>
                         </div>
@@ -158,7 +166,7 @@
                     <i class="fas fa-search" style="font-size: 24px;"></i> สืบค้นเอกสารย้อนหลัง
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control">
+                    <input id="search-bar" type="text" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">ค้นหา</button>
                     </div>
@@ -632,6 +640,172 @@
                 $($('.pagination-content')[index]).show();
             });
         });
+
+        // Search Function
+        (function () {
+            let path = 'documents/';
+            let val;
+            let dataArray = [];
+            let col = [];
+            firebase.database().ref(path).once('value', function (snapshot) {
+                //console.log(dataArray);
+                snapshot.forEach(function (childSnapshot) {
+                    let childData;
+                    let tagid = null;
+                    childData = childSnapshot.val();
+                    dataArray = childData;
+                    //console.log(childData);
+
+                });
+            }).then(function () {
+                //tagid = childData[x].Tag.replace(/\s/g, '');
+                for (x in dataArray) {
+                    console.log(dataArray);
+                    val = $('<tr><td>' + dataArray[x].numreceive + '</td>' +
+                        '<td><h5>' + dataArray[x].subject + '</h5>' +
+                        '<small>' + dataArray[x].date + '</small>' +
+                        '<span class="blockquote-footer">จาก ' + dataArray[x].from +
+                        ' ถึง ' + dataArray[x].reach + '</span></td>' +
+                        '<td>' + dataArray[x].work + '</td>' +
+                        '<td>' + dataArray[x].note + '</td>' +
+                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                        dataArray[x].key + '")">' + dataArray[x].status + '</button></td>' +
+                        '</tr>');
+                    col.push(val);
+                }
+                let page = 0,
+                    interval = 10;
+                let pagContent, table, thead, tr, th;
+                for (let i = 0; i < col.length; i++) {
+                    if (i % interval === 0) {
+                        page++;
+                        $('.pagination').append('<div class="pagination-page">' +
+                            page + '</div>');
+                        pagContent = $('<div class="pagination-content"></div>');
+                        table = $(
+                            '<table class="table table-striped table-advance table-hover ex-table">'
+                        );
+                        thead = $('<thead></thead>');
+                        tr = $('<tr class="text-center"></tr>');
+                        th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, col[i]));
+                        $('.pagination-warpper').append(pagContent);
+                    } else {
+                        table.append(col[i]);
+                    }
+                }
+                $('.pagination-content').hide();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[0]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+                col = $('.ex-table tr').not(':first-child');
+
+                // Get data From URL
+                var search_params = new URLSearchParams(window.location.search);
+                var docs = search_params.get('docs');
+                //if(docs)
+                console.log(docs);
+                console.log(col);
+
+                docs = docs.split(',');
+                console.log(docs);
+
+                let data = [];
+                let txt = null;
+                console.log(col);
+                for (let a = 0; a < docs.length; a++) {
+                    let find = new RegExp('(?:' + docs[a] + ')', 'g');
+                    for (let i = 0; i < col.length; i++) {
+                        txt = $(col[i]).text();
+                        if (find.test(txt)) {
+                            data.push(col[i]);
+                        }
+                    }
+                }
+                if (data.length === 0) {
+                    $('.pagination-page').remove();
+                    $('.pagination-content').remove();
+                    let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                    $('.pagination-warpper').append(detail);
+                } else {
+                    pagUpdate(data);
+                }
+            });
+
+            function pagUpdate(data) {
+                let page = 0,
+                    interval = 24;
+                let pagContent, table, thead, tr, th;
+                $('.pagination-page').remove();
+                $('.pagination-content').remove();
+                for (let i = 0; i < data.length; i++) {
+                    if (i % interval === 0) {
+                        page++;
+                        $('.pagination').append('<div class="pagination-page">' +
+                            page + '</div>');
+                        pagContent = $('<div class="pagination-content"></div>');
+                        table = $(
+                            '<table class="table table-striped table-advance table-hover ex-table">'
+                        );
+                        thead = $('<thead></thead>');
+                        tr = $('<tr class="text-center"></tr>');
+                        th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, data[i]));
+                        $('.pagination-warpper').append(pagContent);
+                    } else {
+                        table.append(data[i]);
+                    }
+                }
+                $('.pagination-content').hide();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[0]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+            }
+            $('#search-bar').on('input', function () {
+                if ($('#search-bar').val() === '') {
+                    pagUpdate(col);
+                } else {
+                    let data = [];
+                    let txt = null;
+                    console.log(col);
+                    let find = new RegExp('(?:' + $(this).val() + ')', 'g');
+                    for (let i = 0; i < col.length; i++) {
+                        txt = $(col[i]).text();
+                        if (find.test(txt)) {
+                            data.push(col[i]);
+                        }
+                    }
+                    if (data.length === 0) {
+                        $('.pagination-page').remove();
+                        $('.pagination-content').remove();
+                        let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                        $('.pagination-warpper').append(detail);
+                    } else {
+                        pagUpdate(data);
+                    }
+                }
+
+            });
+
+        })();
     </script>
 </body>
 
