@@ -40,8 +40,8 @@
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
-                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
+                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -69,8 +69,8 @@
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
                             <input id="numreceive" class="form-control" type="text" required>
-                            <label for="from">เลขที่เอกสาร</label>
-                            <input id="from" class="form-control" type="text" required>
+                            <label for="numberdoc">เลขที่เอกสาร</label>
+                            <input id="numberdoc" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
@@ -156,6 +156,7 @@
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
                 datenow: $('#datenow').val(),
+                numberdoc: $('#numberdoc').val(),
                 from: $('#from').val(),
                 note: $('#note').val(),
                 numreceive: $('#numreceive').val(),

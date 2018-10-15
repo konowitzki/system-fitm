@@ -40,6 +40,7 @@
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
+                    <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
                     <li id="search-documents" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
@@ -70,8 +71,8 @@
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
                             <input id="numreceive" class="form-control" type="text" required>
-                            <label for="from">เลขที่เอกสาร</label>
-                            <input id="from" class="form-control" type="text" required>
+                            <label for="numberdoc">เลขที่เอกสาร</label>
+                            <input id="numberdoc" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
@@ -160,6 +161,20 @@
             </div>
             <!-- End Save Documents -->
 
+            <!-- Start Add QRcode -->
+            <div id="add-qrcode-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> เพิ่มคิวอาร์โค้ด
+                </div>
+                <div class="pagination-warpper-qr"></div>
+                <div class="card-footer text-center">
+                    <button id="btn-qrcode" class="btn btn-secondary" type="submit">สร้าง QRcode</button>
+                    <button id="btn-qrcode-print" class="btn btn-info" onclick="printf()">พิมพ์ QRcode</button>
+                    <div id="docs-qrcode" style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"></div>
+                </div>
+            </div>
+            <!-- End Add QRcode -->
+
             <!-- Start Search Documents -->
             <div id="search-documents-content" class="container-fluid form-content">
                 <div style="margin: 8px 2px;font-size: 20px;">
@@ -193,6 +208,10 @@
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
             $('#add-documents-content').show();
+        });
+        $('#add-qrcode').on('click', function () {
+            $('.form-content').hide();
+            $('#add-qrcode-content').show();
         });
         $('#status-documents').on('click', function () {
             $('.form-content').hide();
@@ -323,6 +342,7 @@
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
                 datenow: $('#datenow').val(),
+                numberdoc: $('#numberdoc').val(),
                 from: $('#from').val(),
                 note: $('#note').val(),
                 numreceive: $('#numreceive').val(),
@@ -643,7 +663,7 @@
 
         // Search Function
         (function () {
-            let path = 'documents/';
+            let path = 'backDocs/';
             let val;
             let dataArray = [];
             let col = [];
