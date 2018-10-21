@@ -92,7 +92,7 @@
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
                 </div>
-                <input type="text" />
+                <input type="text" id="status-search" />
                 <div class="pagination">
                     <div class="pagination-page backward"></div>
                     <div class="pagination-page forward"></div>
@@ -158,7 +158,7 @@
                     <i class="fas fa-search" style="font-size: 24px;"></i> สืบค้นเอกสารย้อนหลัง
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control">
+                    <input type="text" id="documents-search" class="form-control">
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">ค้นหา</button>
                     </div>
@@ -203,33 +203,51 @@
             $(this).addClass('active');
         });
         //  Pagination Data
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                snapshot.forEach(function (data) {
-                    let val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + val.numreceive + '</td>';
-                    content +=
-                        `<td><h5>${val.subject}</h5>
-                        <small>${val.date}</small>
-                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
-                        </td>`;
-                    content += '<td>' + val.work + '</td>';
-                    content += '<td>' + val.note + '</td>';
-                    content += '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")">' + val.status + '</button></td>';
-                    content += '<td class="text-center"><button class="btn btn-warning btn-send" value="' +
-                        data.key + '">สมาชิก</button></td>';
-                    content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
-                        '</div></td>';
-                    content += '</tr>';
-                    i++;
-                    if (i % interval === 0) {
+        (function () {
+            let col = [];
+            database.ref("documents").once('child_added', function (snapshot) {
+                //ดึงnode users
+                if (snapshot.exists()) {
+                    var content = [];
+                    let i = 0,
+                        page = 0,
+                        interval = 5;
+                    snapshot.forEach(function (data) {
+                        let val = data.val();
+                        let colData = $('<tr><td>' + val.numreceive + '</td><td><h5>' + val.subject + '</h5>' +
+                            '<small>' + val.date + '</small>' +
+                            '<span class="blockquote-footer">จาก' + val.from + ' ถึง ' + val.reach + '</span></td>' +
+                            '<td>' + val.work + '</td>' +
+                            '<td>' + val.note + '</td>' +
+                            '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                            data.key + '")">' + val.status + '</button></td>' +
+                            '<td class="text-center"><button class="btn btn-warning btn-send" value="' +
+                            data.key + '">สมาชิก</button></td>' +
+                            '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
+                            '</div></td></tr>'
+                        );
+                        content.push(colData);
+                        col.push(colData);
+                        i++;
+                        if (i % interval === 0) {
+                            page++;
+                            $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                                '.pagination-page.forward');
+                            let pagContent = $('<div class="pagination-content"></div>');
+                            let table = $('<table class="table table-bordered"></table>');
+                            let thead = $('<thead></thead>');
+                            let tr = $('<tr class="text-center"></tr>');
+                            let th = $(
+                                '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>เลือก</th><th>ผู้ใช้</th>'
+                            );
+                            thead.append(tr.append(th));
+                            pagContent.append(table.append(thead, content));
+                            $('.pagination-warpper').append(pagContent);
+                            content = [];
+                            console.log(i);
+                        }
+                    });
+                    if (i % interval !== 0) {
                         page++;
                         $('<div class="pagination-page">' + page + '</div>').insertBefore(
                             '.pagination-page.forward');
@@ -238,74 +256,140 @@
                         let thead = $('<thead></thead>');
                         let tr = $('<tr class="text-center"></tr>');
                         let th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>เลือก</th><th>ผู้ใช้</th>'
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th><th>ผู้ใช้</th>'
                         );
                         thead.append(tr.append(th));
                         pagContent.append(table.append(thead, content));
                         $('.pagination-warpper').append(pagContent);
-                        content = '';
-                        console.log(i);
+                        content = [];
                     }
-                });
-                if (i % interval !== 0) {
-                    page++;
-                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                        '.pagination-page.forward');
-                    let pagContent = $('<div class="pagination-content"></div>');
-                    let table = $('<table class="table table-bordered"></table>');
-                    let thead = $('<thead></thead>');
-                    let tr = $('<tr class="text-center"></tr>');
-                    let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>เอกสาร</th><th>เลือก</th><th>ผู้ใช้</th>'
-                    );
-                    thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
-                    $('.pagination-warpper').append(pagContent);
-                    content = '';
                 }
-            }
-        }).then(function () {
-            $('.btn-submit').on('click', function () {
-                onSubmit($(this).val());
-                console.log($(this).val());
-            });
-            let docId;
-            $('.btn-send').on('click', function () {
-                // FIXME: Select User for send Doc
-                $('.select-user').show();
-                docId = $(this).val();
-            });
-            $('.send-doc').on('click', function () {
-                sendDoc(docId);
-                $('.select-user').hide();
-                $('.uid:checked').prop("checked");
-                docId = '';
-            });
-            $('.cancel').on('click', function () {
-                $('.select-user').hide();
-                $('.uid:checked').prop("checked");
-                docId = '';
-            });
-            database.ref("users/data").once("value", function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var childKey = childSnapshot.key;
-                    var childData = childSnapshot.val();
-                    if (childData.isAdmin === 'user') {
-                        $('.select-user > div').first().append('<div><label>' + childData.name + '<input class="uid" type="checkbox" value="' + childKey + '"></label></div>');
-                    }
+            }).then(function () {
+                $('.btn-submit').on('click', function () {
+                    onSubmit($(this).val());
+                    console.log($(this).val());
                 });
-            });
-            $('.pagination-content').hide();
-            $($('.pagination-content')[0]).show();
-            $($('.pagination-page')[1]).addClass('active');
-            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                let index = $(this).text() - 1;
-                $('.pagination-page').removeClass('active');
-                $(this).addClass('active');
+                let docId;
+                $('.btn-send').on('click', function () {
+                    // FIXME: Select User for send Doc
+                    $('.select-user').show();
+                    docId = $(this).val();
+                });
+                $('.send-doc').on('click', function () {
+                    sendDoc(docId);
+                    $('.select-user').hide();
+                    $('.uid:checked').prop("checked");
+                    docId = '';
+                });
+                $('.cancel').on('click', function () {
+                    $('.select-user').hide();
+                    $('.uid:checked').prop("checked");
+                    docId = '';
+                });
+                database.ref("users/data").once("value", function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+                        if (childData.isAdmin === 'user') {
+                            $('.select-user > div').first().append('<div><label>' + childData.name + '<input class="uid" type="checkbox" value="' + childKey + '"></label></div>');
+                        }
+                    });
+                });
                 $('.pagination-content').hide();
-                $($('.pagination-content')[index]).show();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[1]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+                function pagUpdate(data) {
+                    let content = [];
+                    let i = 0,
+                        page = 0,
+                        interval = 5;
+                    let pagContent, table, thead, tr, th;
+                    $('.pagination-page').not('.forward').not('.backward').remove();
+                    $('.pagination-content').remove();
+                    while (i < data.length) {
+                        content.push(data[i]);
+                        i++;
+                        if (i % interval === 0) {
+                            page++;
+                            $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                                '.pagination-page.forward');
+                            pagContent = $('<div class="pagination-content"></div>');
+                            table = $('<table class="table table-bordered"></table>');
+                            thead = $('<thead></thead>');
+                            tr = $('<tr class="text-center"></tr>');
+                            th = $(
+                                '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>เลือก</th><th>ผู้ใช้</th>'
+                            );
+                            thead.append(tr.append(th));
+                            pagContent.append(table.append(thead, content));
+                            $('#status-documents-content .pagination-warpper').append(pagContent);
+                            content = [];
+                        }
+                    }
+                    if (i % interval !== 0) {
+                        page++;
+                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                            '.pagination-page.forward');
+                        pagContent = $('<div class="pagination-content"></div>');
+                        table = $('<table class="table table-bordered"></table>');
+                        thead = $('<thead></thead>');
+                        tr = $('<tr class="text-center"></tr>');
+                        th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>เลือก</th><th>ผู้ใช้</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, content));
+                        $('#status-documents-content .pagination-warpper').append(pagContent);
+                        content = [];
+                    }
+
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[0]).show();
+                    $($('.pagination-page')[0]).addClass('active');
+                    $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                        let index = $(this).text() - 1;
+                        $('.pagination-page').removeClass('active');
+                        $(this).addClass('active');
+                        $('.pagination-content').hide();
+                        $($('.pagination-content')[index]).show();
+                    });
+                }
+                $('#status-search').on('input', function () {
+                    if ($('#status-search').val() === '') {
+                        pagUpdate(col);
+                    } else {
+                        let data = [];
+                        let txt = null;
+                        //console.log(col);
+                        let find = new RegExp('(?:' + $(this).val() + ')', 'g');
+                        for (let i = 0; i < col.length; i++) {
+                            txt = $(col[i]).text();
+                            if (find.test(txt)) {
+                                data.push(col[i]);
+                            }
+                        }
+                        if (data.length === 0) {
+                            $('.pagination-page').not('.backward').not('.forward').remove();
+                            $('#status-documents-content .pagination-content').remove();
+                            let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                            $('.pagination-warpper').append(detail);
+                        } else {
+                            pagUpdate(data);
+                        }
+                    }
+
+                });
+
             });
-        });
+        })();
+
         var storage = firebase.storage();
         var database = firebase.database();
 
@@ -536,7 +620,7 @@
             let users = $('.uid:checked');
             for (let i = 0; i < users.length; i++) {
                 var updates = {}, updateData;
-                database.ref('users/data/' + $(users[i]).val() ).once('value').then(function (snapshot) {
+                database.ref('users/data/' + $(users[i]).val()).once('value').then(function (snapshot) {
                     var data = snapshot.val();
                     console.log(data);
                     console.log($(users[i]).val())
@@ -559,7 +643,7 @@
                     }
                     dbRef.child('users/data/').update(updates);
                     location.reload();
-                }).then(function(){
+                }).then(function () {
                     console.log("Then");
                     console.log($(users[i]).val());
                     console.log(updates[$(users[i]).val()]);
@@ -576,37 +660,37 @@
             });
         }
 
-        // Search Documents
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                snapshot.forEach(function (data) {
-                    let val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + val.numreceive + '</td>';
-                    content +=
-                        `<td><h5>${val.subject}</h5>
+
+        (function () {
+            // Search Documents
+            let col = [];
+            database.ref("documents").once('child_added', function (snapshot) {
+                //ดึงnode users
+                if (snapshot.exists()) {
+                    var content = '';
+                    snapshot.forEach(function (data) {
+                        let val = data.val();
+                        let content = '<tr>';
+                        content += '<td>' + val.numreceive + '</td>';
+                        content +=
+                            `<td><h5>${val.subject}</h5>
                         <small>${val.date}</small>
                         <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
                         </td>`;
-                    content +=
-                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")">' + val.status + '</button></td>';
-                    // TODO: Download URl
-                    if (val.addten === '') {
-                        content += '<td class="text-center"></td>';
-                    } else {
-                        content += '<td class="text-center"><a href="' + val.addten + '" download>เอกสาร</a>' +
-                            '</td>';
-                    }
-                    content += '</tr>';
-                    i++;
-                });
-                if (i % interval !== 0) {
+                        content +=
+                            '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                            data.key + '")">' + val.status + '</button></td>';
+                        // TODO: Download URl
+                        if (val.addten === '') {
+                            content += '<td class="text-center"></td>';
+                        } else {
+                            content += '<td class="text-center"><a href="' + val.addten + '" download>เอกสาร</a>' +
+                                '</td>';
+                        }
+                        content += '</tr>';
+                        col.push($(content));
+
+                    });
                     let pagContent = $('<div class="pagination-content-search"></div>');
                     let table = $('<table class="table table-bordered"></table>');
                     let thead = $('<thead></thead>');
@@ -615,23 +699,71 @@
                         '<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>ดาวน์โหลด</th>'
                     );
                     thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
+                    pagContent.append(table.append(thead, col));
                     $('.pagination-warpper-search').append(pagContent);
-                    content = '';
                 }
-            }
-        }).then(function () {
-            $('.pagination-content').hide();
-            $($('.pagination-content')[0]).show();
-            $($('.pagination-page')[1]).addClass('active');
-            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                let index = $(this).text() - 1;
-                $('.pagination-page').removeClass('active');
-                $(this).addClass('active');
+            }).then(function () {
+                /*
                 $('.pagination-content').hide();
-                $($('.pagination-content')[index]).show();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[1]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+                */
+
+                function pagUpdate(data) {
+                    $('.pagination-content-search').remove();
+                    let pagContent = $('<div class="pagination-content-search"></div>');
+                    let table = $('<table class="table table-bordered"></table>');
+                    let thead = $('<thead></thead>');
+                    let tr = $('<tr class="text-center"></tr>');
+                    let th = $('<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>ดาวน์โหลด</th>');
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, data));
+                    $('.pagination-warpper-search').append(pagContent);
+
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[0]).show();
+                    $($('.pagination-page')[0]).addClass('active');
+                    $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                        let index = $(this).text() - 1;
+                        $('.pagination-page').removeClass('active');
+                        $(this).addClass('active');
+                        $('.pagination-content').hide();
+                        $($('.pagination-content')[index]).show();
+                    });
+                }
+                $('#documents-search').on('input', function () {
+                    if ($('#documents-search').val() === '') {
+                        pagUpdate(col);
+                    } else {
+                        let data = [];
+                        let txt = null;
+                        let find = new RegExp('(?:' + $(this).val() + ')', 'g');
+                        for (let i = 0; i < col.length; i++) {
+                            txt = $(col[i]).text();
+                            if (find.test(txt)) {
+                                data.push(col[i]);
+                            }
+                        }
+                        if (data.length === 0) {
+                            $('.pagination-content-search').remove();
+                            let detail = $('<div class="pagination-content-search">ไม่มีข้อมูลที่ตรงกัน</div>');
+                            $('.pagination-warpper-search').append(detail);
+                        } else {
+                            pagUpdate(data);
+                        }
+                    }
+
+                });
             });
-        });
+        })();
+
     </script>
 </body>
 
