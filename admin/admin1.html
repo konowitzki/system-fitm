@@ -40,8 +40,8 @@
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
-                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
+                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -57,7 +57,7 @@
                         <div class="col-6">
                             <label for="date">วันที่</label>
                             <input id="date" class="form-control" type="date" required>
-                            <label for="datenow">ลงวันที่ที่</label>
+                            <label for="datenow">ลงวันที่</label>
                             <input id="datenow" class="form-control" type="date" required>
                             <label for="reach">ถึง</label>
                             <input id="reach" class="form-control" type="text" required>
@@ -68,13 +68,21 @@
                         </div>
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
-                            <input id="numreceive" class="form-control" type="number" required>
+                            <input id="numreceive" class="form-control" type="text" required>
+                            <label for="numberdoc">เลขที่เอกสาร</label>
+                            <input id="numberdoc" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
                             <input id="subject" class="form-control" type="text" required>
-                            <label for="note">หมายเหตุ</label>
-                            <input id="note" class="form-control" type="text" required>
+                            <div class="form-group">
+                                <label for="note">หมายเหตุ</label>
+                                    <select class="form-control" id="note">
+                                        <option>ปกติ</option>
+                                        <option>ด่วน</option>
+                                        <option>ด่วนที่สุด</option>
+                                    </select>
+                            </div>
                             <label for="role">สิทธิ์</label>
                             <input id="role" class="form-control" type="text" value="user" disabled required>
                         </div>
@@ -118,6 +126,9 @@
     </section>
 
     <script>
+        $('#add-documents-content').show();
+        $('#add-documents').addClass('active');
+
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
             $('#add-documents-content').show();
@@ -146,6 +157,7 @@
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
                 datenow: $('#datenow').val(),
+                numberdoc: $('#numberdoc').val(),
                 from: $('#from').val(),
                 note: $('#note').val(),
                 numreceive: $('#numreceive').val(),

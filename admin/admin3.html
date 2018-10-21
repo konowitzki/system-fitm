@@ -40,6 +40,7 @@
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
+                    <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
                     <li id="search-documents" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
@@ -56,9 +57,9 @@
                 <form class="container">
                     <div class="row">
                         <div class="col-6">
-                            <label for="date">วันที่</label>
+                            <label for="date">วันที่รับเรื่อง</label>
                             <input id="date" class="form-control" type="date" required>
-                            <label for="datenow">ลงวันที่ที่</label>
+                            <label for="datenow">ลงวันที่</label>
                             <input id="datenow" class="form-control" type="date" required>
                             <label for="reach">ถึง</label>
                             <input id="reach" class="form-control" type="text" required>
@@ -69,13 +70,21 @@
                         </div>
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
-                            <input id="numreceive" class="form-control" type="number" required>
+                            <input id="numreceive" class="form-control" type="text" required>
+                            <label for="numberdoc">เลขที่เอกสาร</label>
+                            <input id="numberdoc" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
                             <input id="subject" class="form-control" type="text" required>
-                            <label for="note">หมายเหตุ</label>
-                            <input id="note" class="form-control" type="text" required>
+                            <div class="form-group">
+                                <label for="note">หมายเหตุ</label>
+                                    <select class="form-control" id="note">
+                                        <option>ปกติ</option>
+                                        <option>ด่วน</option>
+                                        <option>ด่วนที่สุด</option>
+                                    </select>
+                            </div>
                             <label for="role">สิทธิ์</label>
                             <input id="role" class="form-control" type="text" value="user" disabled required>
                         </div>
@@ -121,12 +130,20 @@
                         <div class="col-6">
                             <label for="save-numreceive">เลขที่รับ</label>
                             <input id="save-numreceive" class="form-control" type="number" required>
+                            <label for="save-from">เลขที่รับ</label>
+                            <input id="save-from" class="form-control" type="text" required>
                             <label for="save-from">จาก</label>
                             <input id="save-from" class="form-control" type="text" required>
                             <label for="save-subject">เรื่อง</label>
                             <input id="save-subject" class="form-control" type="text" required>
-                            <label for="save-note">หมายเหตุ</label>
-                            <input id="save-note" class="form-control" type="text" required>
+                            <div class="form-group">
+                                <label for="note">หมายเหตุ</label>
+                                    <select class="form-control" id="note">
+                                        <option>ปกติ</option>
+                                        <option>ด่วน</option>
+                                        <option>ด่วนที่สุด</option>
+                                    </select>
+                            </div>
                         </div>
                     </div>
                     <br>
@@ -137,38 +154,60 @@
                     <button id="save-add-data" type="button" class="btn btn-primary">เพิ่มข้อมูล</button>
                     <button type="submit" class="btn btn-danger">ล้างข้อมูล</button>
                 </form>
-                <!-- <br>
-                <table id="status-table-file" class="table table-bordered">
-                    <thead>
-                        <tr class="text-center">
-                            <th>เลขที่รับ</th>
-                            <th>เรื่อง</th>
-                            <th>การปฏิบัติ</th>
-                            <th>หมายเหตุ</th>
-                            <th>จัดการเอกสาร</th>
-                        </tr>
-                    </thead>
-                </table> -->
             </div>
             <!-- End Save Documents -->
 
-            <!-- Start Search Documents -->
+            <!-- Start Add QRcode -->
+            <div id="add-qrcode-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> เพิ่มคิวอาร์โค้ด
+                </div>
+                <div class="pagination-warpper-qr"></div>
+                <div class="card-footer text-center">
+                    <button id="btn-qrcode" class="btn btn-secondary" type="submit">สร้าง QRcode</button>
+                    <button id="btn-qrcode-print" class="btn btn-info" onclick="printf()">พิมพ์ QRcode</button>
+                    <div id="docs-qrcode" style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"></div>
+                </div>
+            </div>
+            <!-- End Add QRcode -->
+
+            <!-- Start Search Backup Documents -->
             <div id="search-documents-content" class="container-fluid form-content">
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="fas fa-search" style="font-size: 24px;"></i> สืบค้นเอกสารย้อนหลัง
                 </div>
                 <div class="input-group mb-3">
+<<<<<<< HEAD
                     <input type="text" id="documents-search" class="form-control">
+=======
+                    <input id="search-bar" type="text" class="form-control">
+>>>>>>> 8a5fb09979f8a0aefaebf09d09312824b3399a8b
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">ค้นหา</button>
                     </div>
                 </div>
                 <div class="pagination-warpper-search"></div>
             </div>
-            <!-- End Search Documents -->
+
+            <!-- 
+                <div id="status-documents-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
+                </div>
+                <input type="text" />
+                <div class="pagination">
+                    <div class="pagination-page backward"></div>
+                    <div class="pagination-page forward"></div>
+                </div>
+                <div class="pagination-warpper"></div>
+            </div>
+             -->
+
+            <!-- End Search Backup Documents -->
         </div>
     </section>
 
+    <!-- Start Select User -->
     <section class="select-user" style="display:none;">
         <span>เลือกผู้รับ</span>
         <div style="overflow-y: scroll;"></div>
@@ -177,6 +216,7 @@
             <input class="cancel" type="button" value="Cancel">
         </div>
     </section>
+    <!-- End Select User -->
 
     <script>
         $('#add-documents-content').show();
@@ -185,6 +225,10 @@
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
             $('#add-documents-content').show();
+        });
+        $('#add-qrcode').on('click', function () {
+            $('.form-content').hide();
+            $('#add-qrcode-content').show();
         });
         $('#status-documents').on('click', function () {
             $('.form-content').hide();
@@ -202,6 +246,7 @@
             $('.tab-nav').removeClass('active');
             $(this).addClass('active');
         });
+        
         //  Pagination Data
         (function () {
             let col = [];
@@ -399,6 +444,7 @@
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
                 datenow: $('#datenow').val(),
+                numberdoc: $('#numberdoc').val(),
                 from: $('#from').val(),
                 note: $('#note').val(),
                 numreceive: $('#numreceive').val(),
@@ -591,6 +637,7 @@
         // End Upload
 
         // Start status table
+
         // Edit User
         function onSubmit(uid) {
             var updates = {};
@@ -762,8 +809,16 @@
 
                 });
             });
+<<<<<<< HEAD
         })();
 
+=======
+        });
+
+        // Start Search Backup Documents
+
+        // End Search Backup Documents
+>>>>>>> 8a5fb09979f8a0aefaebf09d09312824b3399a8b
     </script>
 </body>
 
