@@ -31,7 +31,7 @@
     <script src="../js/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
-    <!-- <script src="../js/session.js"></script> -->
+    <script src="../js/session.js"></script>
 
     <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 2</title>
 </head>
@@ -48,7 +48,9 @@
                 </div>
                 <ul>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
-                    <li><div id="qrcode" align="center"></div></li>
+                    <li>
+                        <div id="qrcode" align="center"></div>
+                    </li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -59,6 +61,7 @@
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
                 </div>
+                <input type="text" id="status-search" />
                 <div class="pagination">
                     <div class="pagination-page backward"></div>
                     <div class="pagination-page forward"></div>
@@ -80,9 +83,10 @@
         </div>
     </div> -->
     <!-- Start qrcode -->
-    
+
 
     <script>
+        let col = [];
         //  Pagination Data
         database.ref("documents").once('child_added', function (snapshot) {
             //ดึงnode users
@@ -109,6 +113,7 @@
                         '</div></td>';
                     content += '</tr>';
                     i++;
+                    col.push($(content));
                     if (i % interval === 0) {
                         page++;
                         $('<div class="pagination-page">' + page + '</div>').insertBefore(
@@ -136,8 +141,8 @@
                     let thead = $('<thead></thead>');
                     let tr = $('<tr class="text-center"></tr>');
                     let th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                        );
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                    );
                     thead.append(tr.append(th));
                     pagContent.append(table.append(thead, content));
                     $('.pagination-warpper').append(pagContent);
@@ -179,9 +184,92 @@
                     location.reload();
                 });
             });
+
+            function pagUpdate(data) {
+                let content = [];
+                let i = 0,
+                    page = 0,
+                    interval = 5;
+                let pagContent, table, thead, tr, th;
+                $('.pagination-page').not('.forward').not('.backward').remove();
+                $('.pagination-content').remove();
+                while (i < data.length) {
+                    content.push(data[i]);
+                    i++;
+                    if (i % interval === 0) {
+                        page++;
+                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                            '.pagination-page.forward');
+                        pagContent = $('<div class="pagination-content"></div>');
+                        table = $('<table class="table table-bordered"></table>');
+                        thead = $('<thead></thead>');
+                        tr = $('<tr class="text-center"></tr>');
+                        th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, content));
+                        $('#status-documents-content .pagination-warpper').append(pagContent);
+                        content = [];
+                    }
+                }
+                if (i % interval !== 0) {
+                    page++;
+                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                        '.pagination-page.forward');
+                    pagContent = $('<div class="pagination-content"></div>');
+                    table = $('<table class="table table-bordered"></table>');
+                    thead = $('<thead></thead>');
+                    tr = $('<tr class="text-center"></tr>');
+                    th = $(
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                    );
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, content));
+                    $('#status-documents-content .pagination-warpper').append(pagContent);
+                    content = [];
+                }
+
+                $('.pagination-content').hide();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[0]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+            }
+            $('#status-search').on('input', function () {
+                if ($('#status-search').val() === '') {
+                    pagUpdate(col);
+                } else {
+                    let data = [];
+                    let txt = null;
+                    //console.log(col);
+                    let find = new RegExp('(?:' + $(this).val() + ')', 'g');
+                    for (let i = 0; i < col.length; i++) {
+                        txt = $(col[i]).text();
+                        if (find.test(txt)) {
+                            data.push(col[i]);
+                        }
+                    }
+                    if (data.length === 0) {
+                        $('.pagination-page').not('.backward').not('.forward').remove();
+                        $('#status-documents-content .pagination-content').remove();
+                        let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                        $('.pagination-warpper').append(detail);
+                    } else {
+                        pagUpdate(data);
+                    }
+                }
+
+            });
+
         });
 
-        
+
     </script>
 </body>
 

@@ -23,7 +23,7 @@
     <script src="../js/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
-    <!-- <script src="../js/session.js"></script> -->
+    <script src="../js/session.js"></script>
 
     <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 1</title>
 </head>
@@ -40,8 +40,8 @@
                 </div>
                 <ul>
                     <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
-                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
+                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -57,7 +57,7 @@
                         <div class="col-6">
                             <label for="date">วันที่</label>
                             <input id="date" class="form-control" type="date" required>
-                            <label for="datenow">ลงวันที่ที่</label>
+                            <label for="datenow">ลงวันที่</label>
                             <input id="datenow" class="form-control" type="date" required>
                             <label for="reach">ถึง</label>
                             <input id="reach" class="form-control" type="text" required>
@@ -68,13 +68,21 @@
                         </div>
                         <div class="col-6">
                             <label for="numreceive">เลขที่รับ</label>
-                            <input id="numreceive" class="form-control" type="number" required>
+                            <input id="numreceive" class="form-control" type="text" required>
+                            <label for="numberdoc">เลขที่เอกสาร</label>
+                            <input id="numberdoc" class="form-control" type="text" required>
                             <label for="from">จาก</label>
                             <input id="from" class="form-control" type="text" required>
                             <label for="subject">เรื่อง</label>
                             <input id="subject" class="form-control" type="text" required>
-                            <label for="note">หมายเหตุ</label>
-                            <input id="note" class="form-control" type="text" required>
+                            <div class="form-group">
+                                <label for="note">หมายเหตุ</label>
+                                    <select class="form-control" id="note">
+                                        <option>ปกติ</option>
+                                        <option>ด่วน</option>
+                                        <option>ด่วนที่สุด</option>
+                                    </select>
+                            </div>
                             <label for="role">สิทธิ์</label>
                             <input id="role" class="form-control" type="text" value="user" disabled required>
                         </div>
@@ -91,6 +99,7 @@
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
                 </div>
+                <input type="text" id="status-search" />
                 <div class="pagination">
                     <div class="pagination-page backward"></div>
                     <div class="pagination-page forward"></div>
@@ -117,6 +126,9 @@
     </section>
 
     <script>
+        $('#add-documents-content').show();
+        $('#add-documents').addClass('active');
+
         $('#add-documents').on('click', function () {
             $('.form-content').hide();
             $('#add-documents-content').show();
@@ -145,6 +157,7 @@
             dbRef.child('documents/data/').push().set({
                 date: $('#date').val(),
                 datenow: $('#datenow').val(),
+                numberdoc: $('#numberdoc').val(),
                 from: $('#from').val(),
                 note: $('#note').val(),
                 numreceive: $('#numreceive').val(),
@@ -157,6 +170,7 @@
                 addten: ''
             });
         });
+        let col = [];
         //  Pagination Data Status-Content
         database.ref("documents").once('child_added', function (snapshot) {
             //ดึงnode users
@@ -183,6 +197,7 @@
                         '</div></td>';
                     content += '</tr>';
                     i++;
+                    col.push($(content));
                     if (i % interval === 0) {
                         page++;
                         $('<div class="pagination-page">' + page + '</div>').insertBefore(
@@ -228,6 +243,88 @@
                 $(this).addClass('active');
                 $('.pagination-content').hide();
                 $($('.pagination-content')[index]).show();
+            });
+
+            function pagUpdate(data) {
+                let content = [];
+                let i = 0,
+                    page = 0,
+                    interval = 5;
+                let pagContent, table, thead, tr, th;
+                $('.pagination-page').not('.forward').not('.backward').remove();
+                $('.pagination-content').remove();
+                while (i < data.length) {
+                    content.push(data[i]);
+                    i++;
+                    if (i % interval === 0) {
+                        page++;
+                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                            '.pagination-page.forward');
+                        pagContent = $('<div class="pagination-content"></div>');
+                        table = $('<table class="table table-bordered"></table>');
+                        thead = $('<thead></thead>');
+                        tr = $('<tr class="text-center"></tr>');
+                        th = $(
+                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                        );
+                        thead.append(tr.append(th));
+                        pagContent.append(table.append(thead, content));
+                        $('#status-documents-content .pagination-warpper').append(pagContent);
+                        content = [];
+                    }
+                }
+                if (i % interval !== 0) {
+                    page++;
+                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
+                        '.pagination-page.forward');
+                    pagContent = $('<div class="pagination-content"></div>');
+                    table = $('<table class="table table-bordered"></table>');
+                    thead = $('<thead></thead>');
+                    tr = $('<tr class="text-center"></tr>');
+                    th = $(
+                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
+                    );
+                    thead.append(tr.append(th));
+                    pagContent.append(table.append(thead, content));
+                    $('#status-documents-content .pagination-warpper').append(pagContent);
+                    content = [];
+                }
+
+                $('.pagination-content').hide();
+                $($('.pagination-content')[0]).show();
+                $($('.pagination-page')[0]).addClass('active');
+                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
+                    let index = $(this).text() - 1;
+                    $('.pagination-page').removeClass('active');
+                    $(this).addClass('active');
+                    $('.pagination-content').hide();
+                    $($('.pagination-content')[index]).show();
+                });
+            }
+            $('#status-search').on('input', function () {
+                if ($('#status-search').val() === '') {
+                    pagUpdate(col);
+                } else {
+                    let data = [];
+                    let txt = null;
+                    //console.log(col);
+                    let find = new RegExp('(?:' + $(this).val() + ')', 'g');
+                    for (let i = 0; i < col.length; i++) {
+                        txt = $(col[i]).text();
+                        if (find.test(txt)) {
+                            data.push(col[i]);
+                        }
+                    }
+                    if (data.length === 0) {
+                        $('.pagination-page').not('.backward').not('.forward').remove();
+                        $('#status-documents-content .pagination-content').remove();
+                        let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
+                        $('.pagination-warpper').append(detail);
+                    } else {
+                        pagUpdate(data);
+                    }
+                }
+
             });
         });
 
@@ -299,12 +396,12 @@
             qrcode.clear();
             let elem = $('.form-check-input:checked'),
                 txt = 'https://fitm-system-3.firebaseapp.com/report.html';
-                if(elem.length > 0 ){
-                    txt += '?docs=';
-                }
+            if (elem.length > 0) {
+                txt += '?docs=';
+            }
             for (let i = 0; i < elem.length; i++) {
                 txt += $(elem[i]).val();
-                if( (i+1) !== elem.length){
+                if ((i + 1) !== elem.length) {
                     txt += ',';
                 }
             }
