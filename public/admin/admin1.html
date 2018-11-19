@@ -355,8 +355,9 @@
                     // ปิด ติด Check Box
                     content += '</tr>';
                     i++;
+                    
                 });
-                if (i % interval !== 0) {
+                //if (i % interval !== 0) {
                     let pagContent = $('<div class="pagination-content-qr"></div>');
                     let table = $('<table class="table table-bordered"></table>');
                     let thead = $('<thead></thead>');
@@ -368,7 +369,8 @@
                     pagContent.append(table.append(thead, content));
                     $('.pagination-warpper-qr').append(pagContent);
                     content = '';
-                }
+                    console.log(pagContent)
+                //}
             }
         }).then(function () {
             $('.pagination-content').hide();

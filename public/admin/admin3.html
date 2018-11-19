@@ -205,9 +205,9 @@
 
     <!-- Start Select User -->
     <section class="select-user" style="display:none;">
-        <span>เลือกผู้รับ</span>
+        <span style="display: block; text-align: center;">เลือกผู้รับ</span>
         <div style="overflow-y: scroll;"></div>
-        <div>
+        <div style="display: block; text-align: center;">
             <input class="send-doc" type="button" value="Send">
             <input class="cancel" type="button" value="Cancel">
         </div>
@@ -332,7 +332,7 @@
                         var childKey = childSnapshot.key;
                         var childData = childSnapshot.val();
                         if (childData.isAdmin === 'user') {
-                            $('.select-user > div').first().append('<div><label>' + childData.name + '<input class="uid" type="checkbox" value="' + childKey + '"></label></div>');
+                            $('.select-user > div').first().append('<label><input class="uid" type="checkbox" value="' + childKey + '">' + childData.name + '</label>');
                         }
                     });
                 });
