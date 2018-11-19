@@ -31,12 +31,6 @@
     <section class="main-warpper">
         <div class="header">
             <img class="logo-fitm" src="../img/fitm.png" />
-            <!-- <div>
-                <div class="btn btn-info">
-                    <i class="fas fa-user-circle"></i>
-                    <span id="result"></span>
-                </div>
-            </div> -->
         </div>
         <div class="left-sidebar">
             <nav class="sidebar-nav">
@@ -64,6 +58,7 @@
             </div>
         </div>
     </section>
+    
     <script>
         database.ref("users").once('child_added', function (snapshot) {
             //ดึงnode users
@@ -99,7 +94,6 @@
             });
             $('.btn-edit').on('click', function () {
                 url = 'edituser.html?uid=' + $(this).val();
-                //url = 'https://fitm-system-3.firebaseapp.com/rootadmin/edituser.html?uid=' + $(this).val();
                 window.location.href = url;
             });
         });
