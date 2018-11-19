@@ -1,116 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+      integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Trirong"
+      rel="stylesheet"
+    />
     <!-- Script -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+      integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+      crossorigin="anonymous"
+    ></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/session.js"></script>
 
-    <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบเพิ่มสมาชิก</title>
-</head>
+    <title>
+      ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบเพิ่มสมาชิก
+    </title>
+  </head>
 
-<body>
+  <body>
     <section class="main-warpper">
-        <div class="header">
-            <img class="logo-fitm" src="../img/fitm.png" />
+      <div class="header"><img class="logo-fitm" src="../img/fitm.png" /></div>
+      <div class="left-sidebar">
+        <nav class="sidebar-nav">
+          <ul>
+            <li class="label-nav">ข้อมูลผู้ใช้</li>
+            <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
+          </ul>
+        </nav>
+      </div>
+      <div class="page-warpper">
+        <div class="container-fluid">
+          <div
+            id="add-data"
+            class="btn btn-primary"
+            style="float: right;margin: 5px 2px;"
+          >
+            เพิ่มข้อมูลผู้ใช้
+          </div>
+          <table id="ex-table" class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>ชื่อ</th>
+                <th>อีเมล์</th>
+                <th>รหัสผ่าน</th>
+                <th>สถานะผู้ใช้</th>
+                <th colspan="2">จัดการข้อมูลผู้ใช้</th>
+              </tr>
+            </thead>
+          </table>
         </div>
-        <div class="left-sidebar">
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="label-nav">ข้อมูลผู้ใช้</li>
-                    <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
-                </ul>
-            </nav>
-        </div>
-        <div class="page-warpper">
-            <div class="container-fluid">
-                <div id="add-data" class="btn btn-primary" style="float: right;margin: 5px 2px;">เพิ่มข้อมูลผู้ใช้</div>
-                <table id="ex-table" class="table table-bordered text-center">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>ชื่อ</th>
-                            <th>อีเมล์</th>
-                            <th>รหัสผ่าน</th>
-                            <th>สถานะผู้ใช้</th>
-                            <th colspan="2">จัดการข้อมูลผู้ใช้</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+      </div>
     </section>
-    
+
     <script>
-        database.ref("users").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                var i = 1;
-                snapshot.forEach(function (data) {
-                    var val = data.val();
-                    console.log("row", data.val());
-                    content += '<tr>';
-                    content += '<td>' + i + '</td>';
-                    content += '<td>' + val.name + '</td>';
-                    content += '<td>' + val.email + '</td>';
-                    content += '<td>' + val.password + '</td>';
-                    content += '<td>' + val.isAdmin + '</td>';
-                    content +=
-                        '<td> <button id="edit" type="button" class="btn btn-secondary btn-edit" value="' +
-                        data.key + '">แก้ไข</button> </td>';
-                    content += '<td> <button type="button" class="btn btn-danger btn-delete" value="' +
-                        data.key + '")">ลบ</button> </td>';
-                    content += '</tr>';
-                    i++;
-                });
-                var theDiv = document.getElementById("ex-table");
-                theDiv.innerHTML += content;
-            }
-        }).then(function () {
-            $('.btn-delete').on('click', function () {
-                $(this).parent().parent().hide();
-                delRemove($(this).val());
-                console.log($(this).val());
-                $(this).parent().parent().remove();
+      database
+        .ref("users")
+        .once("child_added", function(snapshot) {
+          //ดึงnode users
+          if (snapshot.exists()) {
+            var content = "";
+            var i = 1;
+            snapshot.forEach(function(data) {
+              var val = data.val();
+              console.log("row", data.val());
+              if (val.isAdmin !== "rootadmin") {
+                content += "<tr>";
+                content += "<td>" + i + "</td>";
+                content += "<td>" + val.name + "</td>";
+                content += "<td>" + val.email + "</td>";
+                content += "<td>" + val.password + "</td>";
+                content += "<td>" + val.isAdmin + "</td>";
+                content +=
+                  '<td> <button id="edit" type="button" class="btn btn-secondary btn-edit" value="' +
+                  data.key +
+                  '">แก้ไข</button> </td>';
+                content +=
+                  '<td> <button type="button" class="btn btn-danger btn-delete" value="' +
+                  data.key +
+                  '")">ลบ</button> </td>';
+                content += "</tr>";
+                i++;
+              }else{
+                content += "<tr>";
+                content += "<td>" + i + "</td>";
+                content += "<td>" + val.name + "</td>";
+                content += "<td>" + val.email + "</td>";
+                content += "<td>" + val.password + "</td>";
+                content += "<td>" + val.isAdmin + "</td>";
+                content +=
+                  '<td colspan="2"> <button id="edit" type="button" class="btn btn-secondary btn-edit" value="' +
+                  data.key +
+                  '">แก้ไข</button> </td>';
+                content += "</tr>";
+                i++;
+              }
             });
-            $('.btn-edit').on('click', function () {
-                url = 'edituser.html?uid=' + $(this).val();
-                window.location.href = url;
-            });
+            var theDiv = document.getElementById("ex-table");
+            theDiv.innerHTML += content;
+          }
+        })
+        .then(function() {
+          $(".btn-delete").on("click", function() {
+            $(this)
+              .parent()
+              .parent()
+              .hide();
+            delRemove($(this).val());
+            console.log($(this).val());
+            $(this)
+              .parent()
+              .parent()
+              .remove();
+          });
+          $(".btn-edit").on("click", function() {
+            url = "edituser.html?uid=" + $(this).val();
+            window.location.href = url;
+          });
         });
-        document.getElementById("add-data").onclick = function (e) {
-            window.location.href = "adduser.html";
-        }
+      document.getElementById("add-data").onclick = function(e) {
+        window.location.href = "adduser.html";
+      };
 
-        // Delete User
-        function delRemove(uid) {
-            let firebaseRef = database.ref("users/data/" + uid);
-            firebaseRef.remove().then(function () {
-                console.log("Remove Success.");
-            }).catch(function (error) {
-                console.log("Remove Failed" + error.message);
-            });
-        }
+      // Delete User
+      function delRemove(uid) {
+        let firebaseRef = database.ref("users/data/" + uid);
+        firebaseRef
+          .remove()
+          .then(function() {
+            console.log("Remove Success.");
+          })
+          .catch(function(error) {
+            console.log("Remove Failed" + error.message);
+          });
+      }
     </script>
-</body>
-
+  </body>
 </html>
