@@ -196,6 +196,15 @@
                   type="text"
                   required
                 />
+                <label for="status">สถานะ</label>
+                <input
+                  id="status"
+                  class="form-control"
+                  type="text"
+                  value="เสร็จสมบูรณ์"
+                  disabled
+                  required
+                />
               </div>
               <div class="col-6">
                 <label for="save-numreceive">เลขที่รับ</label>
@@ -593,7 +602,6 @@
             var content = "";
             snapshot.forEach(function(data) {
               var val = data.val();
-              // console.log("row",data.val());
               content += "<tr>";
               content += "<td>" + val.numreceive + "</td>";
               content += `<td><h5>${val.subject}</h5>
@@ -690,6 +698,7 @@
             }
           });
       });
+
       $("#save-add-data").on("click", function(e) {
         let date = $("#save-date").val();
         let numreceive = $("#save-numreceive").val();
@@ -707,20 +716,17 @@
           console.log(null);
           return false;
         }
-        var storageRef = firebase.storage().ref();
-        // File or Blob named mountains.jpg
-        var file = thumbnail;
 
+        var storageRef = firebase.storage().ref();
+        var file = thumbnail;
         // Create the file metadata
         var metadata = {
           contentType: file.type
         };
-
         // Upload file and metadata to the object 'images/mountains.jpg'
         var uploadTask = storageRef
           .child("backupDocs/" + file.name)
           .put(file, metadata);
-
         // Listen for state changes, errors, and completion of the upload.
         uploadTask.on(
           firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
@@ -745,11 +751,9 @@
               case "storage/unauthorized":
                 // User doesn't have permission to access the object
                 break;
-
               case "storage/canceled":
                 // User canceled the upload
                 break;
-
               case "storage/unknown":
                 // Unknown error occurred, inspect error.serverResponse
                 break;
