@@ -228,7 +228,7 @@
                 />
                 <div class="form-group">
                   <label for="note">หมายเหตุ</label>
-                  <select class="form-control" id="note">
+                  <select class="form-control" id="save-note">
                     <option>ปกติ</option>
                     <option>ด่วน</option>
                     <option>ด่วนที่สุด</option>
@@ -251,15 +251,27 @@
 
         <!-- Start Add QRcode Content -->
         <div id="add-qrcode-content" class="container-fluid form-content">
-            <div style="margin: 8px 2px;font-size: 20px;">
-                <i class="fas fa-qrcode" style="font-size: 24px;"></i> เพิ่มคิวอาร์โค้ด
-            </div>
-            <div class="pagination-warpper-qr"></div>
-            <div class="card-footer text-center">
-                <button id="btn-qrcode" class="btn btn-secondary" type="submit">สร้าง QRcode</button>
-                <button id="btn-qrcode-print" class="btn btn-info" onclick="window.print()">พิมพ์ QRcode</button>
-                <div id="docs-qrcode" style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"></div>
-            </div>
+          <div style="margin: 8px 2px;font-size: 20px;">
+            <i class="fas fa-qrcode" style="font-size: 24px;"></i>
+            เพิ่มคิวอาร์โค้ด
+          </div>
+          <div class="pagination-warpper-qr"></div>
+          <div class="card-footer text-center">
+            <button id="btn-qrcode" class="btn btn-secondary" type="submit">
+              สร้าง QRcode
+            </button>
+            <button
+              id="btn-qrcode-print"
+              class="btn btn-info"
+              onclick="window.print()"
+            >
+              พิมพ์ QRcode
+            </button>
+            <div
+              id="docs-qrcode"
+              style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"
+            ></div>
+          </div>
         </div>
         <!-- End Add QRcode Content -->
 
@@ -356,7 +368,7 @@
                     "</td>" +
                     '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                     data.key +
-                    '")">' +
+                    '">' +
                     val.status +
                     "</button></td>" +
                     '<td class="text-center"><button class="btn btn-warning btn-send" value="' +
@@ -528,6 +540,27 @@
                   $(".pagination-content").hide();
                   $($(".pagination-content")[index]).show();
                 });
+              $(".btn-submit").on("click", function() {
+                onSubmit($(this).val());
+                console.log($(this).val());
+              });
+              let docId;
+              $(".btn-send").on("click", function() {
+                // FIXME: Select User for send Doc
+                $(".select-user").show();
+                docId = $(this).val();
+              });
+              $(".send-doc").on("click", function() {
+                sendDoc(docId);
+                $(".select-user").hide();
+                $(".uid:checked").prop("checked");
+                docId = "";
+              });
+              $(".cancel").on("click", function() {
+                $(".select-user").hide();
+                $(".uid:checked").prop("checked");
+                docId = "";
+              });
             }
             $("#status-search").on("input", function() {
               if ($("#status-search").val() === "") {
@@ -597,11 +630,11 @@
               content += "<tr>";
               content += "<td>" + val.numreceive + "</td>";
               content += `<td><h5>${val.subject}</h5>
-                              <small>${val.date}</small>
-                              <span class="blockquote-footer">จาก ${
-                                val.from
-                              } ถึง ${val.reach}</span>
-                              </td>`;
+                                          <small>${val.date}</small>
+                                          <span class="blockquote-footer">จาก ${
+                                            val.from
+                                          } ถึง ${val.reach}</span>
+                                          </td>`;
               content += "<td>" + val.work + "</td>";
               content += "<td>" + val.note + "</td>";
               content +=
@@ -780,6 +813,7 @@
                 };
                 let updates = {};
                 updates[keyData] = updateData;
+                console.log(updates);
                 storesRef.update(updates);
               });
           }
@@ -887,15 +921,15 @@
                 let content = "<tr>";
                 content += "<td>" + val.numreceive + "</td>";
                 content += `<td><h5>${val.subject}</h5>
-                              <small>${val.date}</small>
-                              <span class="blockquote-footer">จาก ${
-                                val.from
-                              } ถึง ${val.reach}</span>
-                              </td>`;
+                                          <small>${val.date}</small>
+                                          <span class="blockquote-footer">จาก ${
+                                            val.from
+                                          } ถึง ${val.reach}</span>
+                                          </td>`;
                 content +=
                   '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                   data.key +
-                  '")">' +
+                  '">' +
                   val.status +
                   "</button></td>";
                 // TODO: Download URl
@@ -1009,15 +1043,15 @@
                 content += "<tr>";
                 content += "<td>" + val.numreceive + "</td>";
                 content += `<td><h5>${val.subject}</h5>
-                              <small>${val.date}</small>
-                              <span class="blockquote-footer">จาก ${
-                                val.from
-                              } ถึง ${val.reach}</span>
-                              </td>`;
+                                          <small>${val.date}</small>
+                                          <span class="blockquote-footer">จาก ${
+                                            val.from
+                                          } ถึง ${val.reach}</span>
+                                          </td>`;
                 content +=
                   '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                   data.key +
-                  '")">' +
+                  '">' +
                   val.status +
                   "</button></td>";
                 // เริ่ม ติด Check Box
