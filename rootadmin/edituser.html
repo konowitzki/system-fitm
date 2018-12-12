@@ -85,7 +85,7 @@
             }
         });
         $('#email').on('keydown keyup', function (event) {
-            let format = /[!#$%^&*()+\-=\[\]{};':"\\|,<>\/?]+/;
+            let format = /[!#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
             let str = $(this).val();
             if(format.test(str)){
                 $(this).val(str.substring(0, str.length - 1));
