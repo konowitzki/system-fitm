@@ -83,7 +83,7 @@
                     content += '<td>' + val.note + '</td>';
                     content +=
                         '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")">' + val.status + '</button></td>';
+                        data.key + '">' + val.status + '</button></td>';
                     content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
                         '</div></td>';
                     content += '</tr>';
@@ -136,29 +136,7 @@
                 $($('.pagination-content')[index]).show();
             });
             $('#status-documents-content').show();
-            $('.btn-submit').on('click', function () {
-                let uid = $(this).val();
-                updates = {};
-                firebase.database().ref('documents/data/' + uid).once('value').then(function (snapshot) {
-                    var data = snapshot.val();
-                    updates["documents/data/" + uid] = {
-                        date: data.date,
-                        datenow: data.datenow,
-                        from: data.from,
-                        note: data.note,
-                        numreceive: data.numreceive,
-                        reach: data.reach,
-                        status: "รออนุมัติ",
-                        subject: data.subject,
-                        work: data.work,
-                        role: data.role,
-                        cradit: $('#result').text(),
-                        addten: ''
-                    };
-                    firebase.database().ref().update(updates);
-                    location.reload();
-                });
-            });
+            
             col.reverse();
             pagUpdate(col);
             function pagUpdate(data) {
@@ -242,7 +220,29 @@
                 }
 
             });
-
+            $('.btn-submit').on('click', function () {
+                let uid = $(this).val();
+                updates = {};
+                firebase.database().ref('documents/data/' + uid).once('value').then(function (snapshot) {
+                    var data = snapshot.val();
+                    updates["documents/data/" + uid] = {
+                        date: data.date,
+                        datenow: data.datenow,
+                        from: data.from,
+                        note: data.note,
+                        numreceive: data.numreceive,
+                        reach: data.reach,
+                        status: "รออนุมัติ",
+                        subject: data.subject,
+                        work: data.work,
+                        role: data.role,
+                        cradit: $('#result').text(),
+                        addten: ''
+                    };
+                    firebase.database().ref().update(updates);
+                    location.reload();
+                });
+            });
         });
 
 
