@@ -125,11 +125,11 @@
                     <option>ด่วนที่สุด</option>
                   </select>
                 </div>
-                <label for="role">สิทธิ์</label>
+                <label for="role" hidden>สิทธิ์</label>
                 <input
                   id="role"
                   class="form-control"
-                  type="text"
+                  type="hidden"
                   value="user"
                   disabled
                   required
@@ -272,7 +272,7 @@
             <button
               id="btn-qrcode-print"
               class="btn btn-info"
-              onclick="window.print()"
+              onclick="printqrcode()"
             >
               พิมพ์ QRcode
             </button>
@@ -638,11 +638,11 @@
               content += "<tr>";
               content += "<td>" + val.numreceive + "</td>";
               content += `<td><h5>${val.subject}</h5>
-                                          <small>${val.date}</small>
-                                          <span class="blockquote-footer">จาก ${
-                                            val.from
-                                          } ถึง ${val.reach}</span>
-                                          </td>`;
+                                                      <small>${val.date}</small>
+                                                      <span class="blockquote-footer">จาก ${
+                                                        val.from
+                                                      } ถึง ${val.reach}</span>
+                                                      </td>`;
               content += "<td>" + val.work + "</td>";
               content += "<td>" + val.note + "</td>";
               content +=
@@ -819,6 +819,7 @@
                 updates[keyData] = updateData;
                 console.log(updates);
                 storesRef.update(updates);
+                location.reload();
               });
           }
         );
@@ -925,11 +926,11 @@
                 let content = "<tr>";
                 content += "<td>" + val.numreceive + "</td>";
                 content += `<td><h5>${val.subject}</h5>
-                                          <small>${val.date}</small>
-                                          <span class="blockquote-footer">จาก ${
-                                            val.from
-                                          } ถึง ${val.reach}</span>
-                                          </td>`;
+                                                      <small>${val.date}</small>
+                                                      <span class="blockquote-footer">จาก ${
+                                                        val.from
+                                                      } ถึง ${val.reach}</span>
+                                                      </td>`;
                 content +=
                   '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                   data.key +
@@ -1047,11 +1048,11 @@
                 content += "<tr>";
                 content += "<td>" + val.numreceive + "</td>";
                 content += `<td><h5>${val.subject}</h5>
-                                          <small>${val.date}</small>
-                                          <span class="blockquote-footer">จาก ${
-                                            val.from
-                                          } ถึง ${val.reach}</span>
-                                          </td>`;
+                                                      <small>${val.date}</small>
+                                                      <span class="blockquote-footer">จาก ${
+                                                        val.from
+                                                      } ถึง ${val.reach}</span>
+                                                      </td>`;
                 content +=
                   '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
                   data.key +
@@ -1124,6 +1125,21 @@
           qrcode.makeCode(txt);
         });
       })();
+
+      function printqrcode() {
+        var newWindow = window.open("", "", "width=800,height=600");
+
+        let Imgqrcode = $("#docs-qrcode > img").attr("src");
+
+        newWindow.document.write(
+          '<img src="' + Imgqrcode + '" height="128" width="128"></img>'
+        );
+
+        newWindow.document.close();
+        newWindow.focus();
+        newWindow.print();
+        newWindow.close();
+      }
     </script>
   </body>
 </html>
