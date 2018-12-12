@@ -1,426 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Trirong" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+      integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Trirong"
+      rel="stylesheet"
+    />
     <!-- Script -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+      integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+      crossorigin="anonymous"
+    ></script>
     <!-- QRcode -->
     <script src="../js/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/session.js"></script>
 
-    <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 1</title>
-</head>
+    <title>
+      ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 1
+    </title>
+  </head>
 
-<body>
+  <body>
     <section class="main-warpper">
-        <div class="left-sidebar">
-            <nav class="sidebar-nav">
-                <img class="logo-fitm" src="../img/fitm.png" />
-                <div class="text-center" style="margin-top: 5px;">
-                    <i class="fas fa-user-circle"></i>
-                    <br>
-                    <span id="result"></span>
+      <div class="left-sidebar">
+        <nav class="sidebar-nav">
+          <img class="logo-fitm" src="../img/fitm.png" />
+          <div class="text-center" style="margin-top: 5px;">
+            <i class="fas fa-user-circle"></i> <br />
+            <span id="result"></span>
+          </div>
+          <ul>
+            <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
+            <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
+            <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+            <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
+          </ul>
+        </nav>
+      </div>
+      <div class="page-warpper">
+        <!-- Add Documents -->
+        <div id="add-documents-content" class="container-fluid form-content">
+          <div style="margin: 8px 2px;font-size: 20px;">
+            <i class="far fa-file-alt" style="font-size: 24px;"></i> เพิ่มเอกสาร
+          </div>
+          <form class="container">
+            <div class="row">
+              <div class="col-6">
+                <label for="date">วันที่</label>
+                <input
+                  id="date"
+                  class="form-control"
+                  type="date"
+                  value="dd/mm/yyyy"
+                  required
+                />
+                <label for="datenow">ลงวันที่</label>
+                <input id="datenow" class="form-control" type="date" required />
+                <label for="reach">ถึง</label>
+                <input id="reach" class="form-control" type="text" required />
+                <label for="work">การปฏิบัติ</label>
+                <input id="work" class="form-control" type="text" required />
+                <label for="status">สถานะ</label>
+                <input
+                  id="status"
+                  class="form-control"
+                  type="text"
+                  value="รับเข้า"
+                  required
+                  disabled
+                />
+              </div>
+              <div class="col-6">
+                <label for="numreceive">เลขที่รับ</label>
+                <input
+                  id="numreceive"
+                  class="form-control"
+                  type="text"
+                  required
+                />
+                <label for="numberdoc">เลขที่เอกสาร</label>
+                <input
+                  id="numberdoc"
+                  class="form-control"
+                  type="text"
+                  required
+                />
+                <label for="from">จาก</label>
+                <input id="from" class="form-control" type="text" required />
+                <label for="subject">เรื่อง</label>
+                <input id="subject" class="form-control" type="text" required />
+                <div class="form-group">
+                  <label for="note">หมายเหตุ</label>
+                  <select class="form-control" id="note">
+                    <option>ปกติ</option>
+                    <option>ด่วน</option>
+                    <option>ด่วนที่สุด</option>
+                  </select>
                 </div>
-                <ul>
-                    <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
-                    <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
-                    <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
-                    <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
-                </ul>
-            </nav>
+                <label for="role" hidden>สิทธิ์</label>
+                <input
+                  id="role"
+                  class="form-control"
+                  type="hidden"
+                  value="user"
+                  disabled
+                  required
+                />
+              </div>
+            </div>
+            <br />
+            <button id="add-data" type="submit" class="btn btn-primary">
+              เพิ่มข้อมูล
+            </button>
+            <button type="reset" class="btn btn-danger">ล้างข้อมูล</button>
+          </form>
         </div>
-        <div class="page-warpper">
-            <!-- Add Documents -->
-            <div id="add-documents-content" class="container-fluid form-content">
-                <div style="margin: 8px 2px;font-size: 20px;">
-                    <i class="far fa-file-alt" style="font-size: 24px;"></i> เพิ่มเอกสาร
-                </div>
-                <form class="container">
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="date">วันที่</label>
-                            <input id="date" class="form-control" type="date" required>
-                            <label for="datenow">ลงวันที่</label>
-                            <input id="datenow" class="form-control" type="date" required>
-                            <label for="reach">ถึง</label>
-                            <input id="reach" class="form-control" type="text" required>
-                            <label for="work">การปฏิบัติ</label>
-                            <input id="work" class="form-control" type="text" required>
-                            <label for="status">สถานะ</label>
-                            <input id="status" class="form-control" type="text" value="รับเข้า" required disabled>
-                        </div>
-                        <div class="col-6">
-                            <label for="numreceive">เลขที่รับ</label>
-                            <input id="numreceive" class="form-control" type="text" required>
-                            <label for="numberdoc">เลขที่เอกสาร</label>
-                            <input id="numberdoc" class="form-control" type="text" required>
-                            <label for="from">จาก</label>
-                            <input id="from" class="form-control" type="text" required>
-                            <label for="subject">เรื่อง</label>
-                            <input id="subject" class="form-control" type="text" required>
-                            <div class="form-group">
-                                <label for="note">หมายเหตุ</label>
-                                    <select class="form-control" id="note">
-                                        <option>ปกติ</option>
-                                        <option>ด่วน</option>
-                                        <option>ด่วนที่สุด</option>
-                                    </select>
-                            </div>
-                            <label for="role">สิทธิ์</label>
-                            <input id="role" class="form-control" type="text" value="user" disabled required>
-                        </div>
-                    </div>
-                    <br>
-                    <button id="add-data" type="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
-                    <button type="reset" class="btn btn-danger">ล้างข้อมูล</button>
-                </form>
-            </div>
-            <!-- End Add Documents -->
+        <!-- End Add Documents -->
 
-            <!-- Start Status Documents -->
-            <div id="status-documents-content" class="container-fluid form-content">
-                <div style="margin: 8px 2px;font-size: 20px;">
-                    <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
-                </div>
-                <input type="text" id="status-search" />
-                <div class="pagination">
-                    <div class="pagination-page backward"></div>
-                    <div class="pagination-page forward"></div>
-                </div>
-                <div class="pagination-warpper"></div>
-            </div>
-            <!-- End Status Documents -->
-
-            <!-- Start Add QRcode Content -->
-            <div id="add-qrcode-content" class="container-fluid form-content">
-                <div style="margin: 8px 2px;font-size: 20px;">
-                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> เพิ่มคิวอาร์โค้ด
-                </div>
-                <div class="pagination-warpper-qr"></div>
-                <div class="card-footer text-center">
-                    <button id="btn-qrcode" class="btn btn-secondary" type="submit">สร้าง QRcode</button>
-                    <button id="btn-qrcode-print" class="btn btn-info" onclick="window.print()">พิมพ์ QRcode</button>
-                    <div id="docs-qrcode" style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"></div>
-                </div>
-            </div>
-            <!-- End Add QRcode Content -->
+        <!-- Start Status Documents -->
+        <div id="status-documents-content" class="container-fluid form-content">
+          <div style="margin: 8px 2px;font-size: 20px;">
+            <i class="fas fa-exchange-alt" style="font-size: 24px;"></i>
+            สถานะเอกสาร
+          </div>
+          <input type="text" id="status-search" />
+          <div class="pagination">
+            <div class="pagination-page backward"></div>
+            <div class="pagination-page forward"></div>
+          </div>
+          <div class="pagination-warpper"></div>
         </div>
+        <!-- End Status Documents -->
+
+        <!-- Start Add QRcode Content -->
+        <div id="add-qrcode-content" class="container-fluid form-content">
+          <div style="margin: 8px 2px;font-size: 20px;">
+            <i class="fas fa-qrcode" style="font-size: 24px;"></i>
+            เพิ่มคิวอาร์โค้ด
+          </div>
+          <div class="pagination-warpper-qr"></div>
+          <div class="card-footer text-center">
+            <button id="btn-qrcode" class="btn btn-secondary" type="submit">
+              สร้าง QRcode
+            </button>
+            <button
+              id="btn-qrcode-print"
+              class="btn btn-info"
+              onclick="printqrcode()"
+            >
+              พิมพ์ QRcode
+            </button>
+            <div
+              id="docs-qrcode"
+              style="margin:10px auto;width: 128px;height: 128px;box-shadow: 0px 1px 6px #a0a0a0;"
+            ></div>
+          </div>
+        </div>
+        <!-- End Add QRcode Content -->
+      </div>
     </section>
 
     <script>
-        $('#add-documents-content').show();
-        $('#add-documents').addClass('active');
+      $("#add-documents-content").show();
+      $("#add-documents").addClass("active");
 
-        $('#add-documents').on('click', function () {
-            $('.form-content').hide();
-            $('#add-documents-content').show();
-        });
-        $('#status-documents').on('click', function () {
-            $('.form-content').hide();
-            $('#status-documents-content').show();
-        });
-        $('#add-qrcode').on('click', function () {
-            $('.form-content').hide();
-            $('#add-qrcode-content').show();
-        });
-        $('.tab-nav').on('click', function () {
-            $('.tab-nav').removeClass('active');
-            $(this).addClass('active');
-        });
+      $("#add-documents").on("click", function() {
+        $(".form-content").hide();
+        $("#add-documents-content").show();
+      });
+      $("#status-documents").on("click", function() {
+        $(".form-content").hide();
+        $("#status-documents-content").show();
+      });
+      $("#add-qrcode").on("click", function() {
+        $(".form-content").hide();
+        $("#add-qrcode-content").show();
+      });
+      $(".tab-nav").on("click", function() {
+        $(".tab-nav").removeClass("active");
+        $(this).addClass("active");
+      });
 
-        document.getElementById('datenow').valueAsDate = new Date();
-        $('#add-data').on('click', function (e) {
-            let input = $('.form-control');
-            for (let i = 0; i < input.length; i++) {
-                if ($(input[i]).val() === '') {
-                    return false;
-                }
-            }
-            dbRef.child('documents/data/').push().set({
-                date: $('#date').val(),
-                datenow: $('#datenow').val(),
-                numberdoc: $('#numberdoc').val(),
-                from: $('#from').val(),
-                note: $('#note').val(),
-                numreceive: $('#numreceive').val(),
-                reach: $('#reach').val(),
-                role: $('#role').val(),
-                status: $('#status').val(),
-                subject: $('#subject').val(),
-                work: $('#work').val(),
-                cradit: $('#result').text(),
-                addten: ''
-            });
-        });
-        let col = [];
-        //  Pagination Data Status-Content
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                snapshot.forEach(function (data) {
-                    let val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + val.numreceive + '</td>';
-                    content +=
-                        `<td><h5>${val.subject}</h5>
-                        <small>${val.date}</small>
-                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
-                        </td>`;
-                    content += '<td>' + val.work + '</td>';
-                    content += '<td>' + val.note + '</td>';
-                    content +=
-                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")">' + val.status + '</button></td>';
-                    content += '<td class="text-center"><div class="btn btn-primary">' + val.cradit +
-                        '</div></td>';
-                    content += '</tr>';
-                    i++;
-                    col.push($(content));
-                    if (i % interval === 0) {
-                        page++;
-                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                            '.pagination-page.forward');
-                        let pagContent = $('<div class="pagination-content"></div>');
-                        let table = $('<table class="table table-bordered"></table>');
-                        let thead = $('<thead></thead>');
-                        let tr = $('<tr class="text-center"></tr>');
-                        let th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                        );
-                        thead.append(tr.append(th));
-                        pagContent.append(table.append(thead, content));
-                        $('.pagination-warpper').append(pagContent);
-                        content = '';
-                        console.log(i);
-                    }
-                });
-                if (i % interval !== 0) {
-                    page++;
-                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                        '.pagination-page.forward');
-                    let pagContent = $('<div class="pagination-content"></div>');
-                    let table = $('<table class="table table-bordered"></table>');
-                    let thead = $('<thead></thead>');
-                    let tr = $('<tr class="text-center"></tr>');
-                    let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                    );
-                    thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
-                    $('.pagination-warpper').append(pagContent);
-                    content = '';
-                }
-            }
-        }).then(function () {
-            $('.pagination-content').hide();
-            $($('.pagination-content')[0]).show();
-            $($('.pagination-page')[1]).addClass('active');
-            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                let index = $(this).text() - 1;
-                $('.pagination-page').removeClass('active');
-                $(this).addClass('active');
-                $('.pagination-content').hide();
-                $($('.pagination-content')[index]).show();
-            });
-
-            function pagUpdate(data) {
-                let content = [];
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                let pagContent, table, thead, tr, th;
-                $('.pagination-page').not('.forward').not('.backward').remove();
-                $('.pagination-content').remove();
-                while (i < data.length) {
-                    content.push(data[i]);
-                    i++;
-                    if (i % interval === 0) {
-                        page++;
-                        $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                            '.pagination-page.forward');
-                        pagContent = $('<div class="pagination-content"></div>');
-                        table = $('<table class="table table-bordered"></table>');
-                        thead = $('<thead></thead>');
-                        tr = $('<tr class="text-center"></tr>');
-                        th = $(
-                            '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                        );
-                        thead.append(tr.append(th));
-                        pagContent.append(table.append(thead, content));
-                        $('#status-documents-content .pagination-warpper').append(pagContent);
-                        content = [];
-                    }
-                }
-                if (i % interval !== 0) {
-                    page++;
-                    $('<div class="pagination-page">' + page + '</div>').insertBefore(
-                        '.pagination-page.forward');
-                    pagContent = $('<div class="pagination-content"></div>');
-                    table = $('<table class="table table-bordered"></table>');
-                    thead = $('<thead></thead>');
-                    tr = $('<tr class="text-center"></tr>');
-                    th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th>'
-                    );
-                    thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
-                    $('#status-documents-content .pagination-warpper').append(pagContent);
-                    content = [];
-                }
-
-                $('.pagination-content').hide();
-                $($('.pagination-content')[0]).show();
-                $($('.pagination-page')[0]).addClass('active');
-                $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                    let index = $(this).text() - 1;
-                    $('.pagination-page').removeClass('active');
-                    $(this).addClass('active');
-                    $('.pagination-content').hide();
-                    $($('.pagination-content')[index]).show();
-                });
-            }
-            $('#status-search').on('input', function () {
-                if ($('#status-search').val() === '') {
-                    pagUpdate(col);
-                } else {
-                    let data = [];
-                    let txt = null;
-                    //console.log(col);
-                    let find = new RegExp('(?:' + $(this).val() + ')', 'g');
-                    for (let i = 0; i < col.length; i++) {
-                        txt = $(col[i]).text();
-                        if (find.test(txt)) {
-                            data.push(col[i]);
-                        }
-                    }
-                    if (data.length === 0) {
-                        $('.pagination-page').not('.backward').not('.forward').remove();
-                        $('#status-documents-content .pagination-content').remove();
-                        let detail = $('<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>');
-                        $('.pagination-warpper').append(detail);
-                    } else {
-                        pagUpdate(data);
-                    }
-                }
-
-            });
-        });
-
-        //  Pagination Data Add-Qrcode-Content
-        database.ref("documents").once('child_added', function (snapshot) {
-            //ดึงnode users
-            if (snapshot.exists()) {
-                var content = '';
-                let i = 0,
-                    page = 0,
-                    interval = 5;
-                snapshot.forEach(function (data) {
-                    let val = data.val();
-                    content += '<tr>';
-                    content += '<td>' + val.numreceive + '</td>';
-                    content +=
-                        `<td><h5>${val.subject}</h5>
-                        <small>${val.date}</small>
-                        <span class="blockquote-footer">จาก ${val.from} ถึง ${val.reach}</span>
-                        </td>`;
-                    content +=
-                        '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                        data.key + '")">' + val.status + '</button></td>';
-                    // เริ่ม ติด Check Box
-                    content +=
-                        '<td class="text-center"><input class="form-check-input" type="checkbox" value="' +
-                        val.numreceive + '" style="width:30px;height:30px;"></td>';
-                    // ปิด ติด Check Box
-                    content += '</tr>';
-                    i++;
-                    
-                });
-                //if (i % interval !== 0) {
-                    let pagContent = $('<div class="pagination-content-qr"></div>');
-                    let table = $('<table class="table table-bordered"></table>');
-                    let thead = $('<thead></thead>');
-                    let tr = $('<tr class="text-center"></tr>');
-                    let th = $(
-                        '<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>เลือก</th>'
-                    );
-                    thead.append(tr.append(th));
-                    pagContent.append(table.append(thead, content));
-                    $('.pagination-warpper-qr').append(pagContent);
-                    content = '';
-                    console.log(pagContent)
-                //}
-            }
-        }).then(function () {
-            $('.pagination-content').hide();
-            $($('.pagination-content')[0]).show();
-            $($('.pagination-page')[1]).addClass('active');
-            $('.pagination-page').not('.backward').not('.forward').on('click', function () {
-                let index = $(this).text() - 1;
-                $('.pagination-page').removeClass('active');
-                $(this).addClass('active');
-                $('.pagination-content').hide();
-                $($('.pagination-content')[index]).show();
-            });
-        });
-
-        // qrcode
-        var qrcode = new QRCode("docs-qrcode", {
-            text: "https://fitm-system-3.firebaseapp.com/report.html",
-            width: 128,
-            height: 128,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-        $('#btn-qrcode').on('click', function () {
-            qrcode.clear();
-            let elem = $('.form-check-input:checked'),
-                txt = 'https://fitm-system-3.firebaseapp.com/report.html';
-            if (elem.length > 0) {
-                txt += '?docs=';
-            }
-            for (let i = 0; i < elem.length; i++) {
-                txt += $(elem[i]).val();
-                if ((i + 1) !== elem.length) {
-                    txt += ',';
-                }
-            }
-            qrcode.makeCode(txt);
-        });
-        
-        function delRemove(uid) {
-            let firebaseRef = database.ref("document/data/" + uid);
-            firebaseRef
-            .remove()
-            .then(function() {
-                console.log("Remove Success.");
-            })
-            .catch(function(error) {
-                console.log("Remove Failed" + error.message);
-            });
+      document.getElementById("datenow").valueAsDate = new Date();
+      $("#add-data").on("click", function(e) {
+        let input = $(".form-control");
+        for (let i = 0; i < input.length; i++) {
+          if ($(input[i]).val() === "") {
+            return false;
+          }
         }
-    </script>
-</body>
+        dbRef
+          .child("documents/data/")
+          .push()
+          .set({
+            date: $("#date").val(),
+            datenow: $("#datenow").val(),
+            numberdoc: $("#numberdoc").val(),
+            from: $("#from").val(),
+            note: $("#note").val(),
+            numreceive: $("#numreceive").val(),
+            reach: $("#reach").val(),
+            role: $("#role").val(),
+            status: $("#status").val(),
+            subject: $("#subject").val(),
+            work: $("#work").val(),
+            cradit: $("#result").text(),
+            addten: ""
+          });
+      });
+      let col = [];
+      //  Pagination Data Status-Content
+      database
+        .ref("documents")
+        .once("child_added", function(snapshot) {
+          //ดึงnode users
+          if (snapshot.exists()) {
+            var content = "";
+            let i = 0,
+              page = 0,
+              interval = 5;
+            snapshot.forEach(function(data) {
+              let val = data.val();
+              content += "<tr>";
+              content += "<td>" + val.numreceive + "</td>";
+              content += `<td><h5>${val.subject}</h5>
+                                                <small>${val.date}</small>
+                                                <span class="blockquote-footer">จาก ${
+                                                  val.from
+                                                } ถึง ${val.reach}</span>
+                                                </td>`;
+              content += "<td>" + val.work + "</td>";
+              content += "<td>" + val.note + "</td>";
+              content +=
+                '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                data.key +
+                '")">' +
+                val.status +
+                "</button></td>";
+              content +=
+                '<td class="text-center"><div class="btn btn-primary">' +
+                val.cradit +
+                "</div></td>";
+              content +=
+                '<td class="text-center"><button type="button" class="btn btn-danger btn-delete" value="' +
+                data.key +
+                '")">ลบเอกสาร</button></td>';
+              content += "</tr>";
+              i++;
+              col.push($(content));
+              if (i % interval === 0) {
+                page++;
+                $(
+                  '<div class="pagination-page">' + page + "</div>"
+                ).insertBefore(".pagination-page.forward");
+                let pagContent = $('<div class="pagination-content"></div>');
+                let table = $('<table class="table table-bordered"></table>');
+                let thead = $("<thead></thead>");
+                let tr = $('<tr class="text-center"></tr>');
+                let th = $(
+                  "<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th><th>ลบเอกสาร</th>"
+                );
+                thead.append(tr.append(th));
+                pagContent.append(table.append(thead, content));
+                $(".pagination-warpper").append(pagContent);
+                content = "";
+                console.log(i);
+              }
+            });
+            if (i % interval !== 0) {
+              page++;
+              $('<div class="pagination-page">' + page + "</div>").insertBefore(
+                ".pagination-page.forward"
+              );
+              let pagContent = $('<div class="pagination-content"></div>');
+              let table = $('<table class="table table-bordered"></table>');
+              let thead = $("<thead></thead>");
+              let tr = $('<tr class="text-center"></tr>');
+              let th = $(
+                "<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th><th>ลบเอกสาร</th>"
+              );
+              thead.append(tr.append(th));
+              pagContent.append(table.append(thead, content));
+              $(".pagination-warpper").append(pagContent);
+              content = "";
+            }
+          }
+        })
+        .then(function() {
+          $(".pagination-content").hide();
+          $($(".pagination-content")[0]).show();
+          $($(".pagination-page")[1]).addClass("active");
+          $(".pagination-page")
+            .not(".backward")
+            .not(".forward")
+            .on("click", function() {
+              let index = $(this).text() - 1;
+              $(".pagination-page").removeClass("active");
+              $(this).addClass("active");
+              $(".pagination-content").hide();
+              $($(".pagination-content")[index]).show();
+            });
+          col.reverse();
+          pagUpdate(col);
+          function pagUpdate(data) {
+            let content = [];
+            let i = 0,
+              page = 0,
+              interval = 5;
+            let pagContent, table, thead, tr, th;
+            $(".pagination-page")
+              .not(".forward")
+              .not(".backward")
+              .remove();
+            $(".pagination-content").remove();
+            while (i < data.length) {
+              content.push(data[i]);
+              i++;
+              if (i % interval === 0) {
+                page++;
+                $(
+                  '<div class="pagination-page">' + page + "</div>"
+                ).insertBefore(".pagination-page.forward");
+                pagContent = $('<div class="pagination-content"></div>');
+                table = $('<table class="table table-bordered"></table>');
+                thead = $("<thead></thead>");
+                tr = $('<tr class="text-center"></tr>');
+                th = $(
+                  "<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th><th>ลบเอกสาร</th>"
+                );
+                thead.append(tr.append(th));
+                pagContent.append(table.append(thead, content));
+                $("#status-documents-content .pagination-warpper").append(
+                  pagContent
+                );
+                content = [];
+              }
+            }
+            if (i % interval !== 0) {
+              page++;
+              $('<div class="pagination-page">' + page + "</div>").insertBefore(
+                ".pagination-page.forward"
+              );
+              pagContent = $('<div class="pagination-content"></div>');
+              table = $('<table class="table table-bordered"></table>');
+              thead = $("<thead></thead>");
+              tr = $('<tr class="text-center"></tr>');
+              th = $(
+                "<th>เลขที่รับ</th><th>เรื่อง</th><th>การปฏิบัติ</th><th>หมายเหตุ</th><th>สถานะ</th><th>ผู้ใช้</th><th>ลบเอกสาร</th>"
+              );
+              thead.append(tr.append(th));
+              pagContent.append(table.append(thead, content));
+              $("#status-documents-content .pagination-warpper").append(
+                pagContent
+              );
+              content = [];
+            }
+            $(".btn-delete").on("click", function() {
+              let docName = $(this)
+                .parent()
+                .parent()
+                .children("td:nth-child(2)")
+                .children("h5")
+                .text();
+              console.log(docName);
+              let con = confirm(
+                "คุณต้องการลบเอกสารเรื่อง " + docName + " หรือไม่"
+              );
+              if (con) {
+                delDoc($(this).val());
+                $(this)
+                  .parent()
+                  .parent()
+                  .hide();
+              }
+            });
+            $(".pagination-content").hide();
+            $($(".pagination-content")[0]).show();
+            $($(".pagination-page")[0]).addClass("active");
+            $(".pagination-page")
+              .not(".backward")
+              .not(".forward")
+              .on("click", function() {
+                let index = $(this).text() - 1;
+                $(".pagination-page").removeClass("active");
+                $(this).addClass("active");
+                $(".pagination-content").hide();
+                $($(".pagination-content")[index]).show();
+              });
+          }
+          $("#status-search").on("input", function() {
+            if ($("#status-search").val() === "") {
+              pagUpdate(col);
+            } else {
+              let data = [];
+              let txt = null;
+              //console.log(col);
+              let find = new RegExp("(?:" + $(this).val() + ")", "g");
+              for (let i = 0; i < col.length; i++) {
+                txt = $(col[i]).text();
+                if (find.test(txt)) {
+                  data.push(col[i]);
+                }
+              }
+              if (data.length === 0) {
+                $(".pagination-page")
+                  .not(".backward")
+                  .not(".forward")
+                  .remove();
+                $("#status-documents-content .pagination-content").remove();
+                let detail = $(
+                  '<div class="pagination-content">ไม่มีข้อมูลที่ตรงกัน</div>'
+                );
+                $(".pagination-warpper").append(detail);
+              } else {
+                pagUpdate(data);
+              }
+            }
+          });
+        });
 
+      //  Pagination Data Add-Qrcode-Content
+      database
+        .ref("documents")
+        .once("child_added", function(snapshot) {
+          //ดึงnode users
+          if (snapshot.exists()) {
+            var content = "";
+            let i = 0,
+              page = 0,
+              interval = 5;
+            snapshot.forEach(function(data) {
+              let val = data.val();
+              content += "<tr>";
+              content += "<td>" + val.numreceive + "</td>";
+              content += `<td><h5>${val.subject}</h5>
+                                                <small>${val.date}</small>
+                                                <span class="blockquote-footer">จาก ${
+                                                  val.from
+                                                } ถึง ${val.reach}</span>
+                                                </td>`;
+              content +=
+                '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                data.key +
+                '")">' +
+                val.status +
+                "</button></td>";
+              // เริ่ม ติด Check Box
+              content +=
+                '<td class="text-center"><input class="form-check-input" type="checkbox" value="' +
+                val.numreceive +
+                '" style="width:30px;height:30px;"></td>';
+              // ปิด ติด Check Box
+              content += "</tr>";
+              i++;
+            });
+            //if (i % interval !== 0) {
+            let pagContent = $('<div class="pagination-content-qr"></div>');
+            let table = $('<table class="table table-bordered"></table>');
+            let thead = $("<thead></thead>");
+            let tr = $('<tr class="text-center"></tr>');
+            let th = $(
+              "<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>เลือก</th>"
+            );
+            thead.append(tr.append(th));
+            pagContent.append(table.append(thead, content));
+            $(".pagination-warpper-qr").append(pagContent);
+            content = "";
+            console.log(pagContent);
+            //}
+          }
+        })
+        .then(function() {
+          $(".pagination-content").hide();
+          $($(".pagination-content")[0]).show();
+          $($(".pagination-page")[1]).addClass("active");
+          $(".pagination-page")
+            .not(".backward")
+            .not(".forward")
+            .on("click", function() {
+              let index = $(this).text() - 1;
+              $(".pagination-page").removeClass("active");
+              $(this).addClass("active");
+              $(".pagination-content").hide();
+              $($(".pagination-content")[index]).show();
+            });
+        });
+
+      // qrcode
+      var qrcode = new QRCode("docs-qrcode", {
+        text: "https://fitm-system-3.firebaseapp.com/report.html",
+        width: 128,
+        height: 128,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      $("#btn-qrcode").on("click", function() {
+        qrcode.clear();
+        let elem = $(".form-check-input:checked"),
+          txt = "https://fitm-system-3.firebaseapp.com/report.html";
+        if (elem.length > 0) {
+          txt += "?docs=";
+        }
+        for (let i = 0; i < elem.length; i++) {
+          txt += $(elem[i]).val();
+          if (i + 1 !== elem.length) {
+            txt += ",";
+          }
+        }
+        qrcode.makeCode(txt);
+      });
+
+      function delRemove(uid) {
+        let firebaseRef = database.ref("document/data/" + uid);
+        firebaseRef
+          .remove()
+          .then(function() {
+            console.log("Remove Success.");
+          })
+          .catch(function(error) {
+            console.log("Remove Failed" + error.message);
+          });
+      }
+
+      function printqrcode() {
+        var newWindow = window.open("", "", "width=800,height=600");
+
+        let Imgqrcode = $("#docs-qrcode > img").attr("src");
+
+        newWindow.document.write(
+          '<img src="' + Imgqrcode + '" height="128" width="128"></img>'
+        );
+
+        newWindow.document.close();
+        newWindow.focus();
+        newWindow.print();
+        newWindow.close();
+      }
+      function delDoc(uid) {
+        let firebaseRef = database.ref("documents/data/" + uid);
+        firebaseRef
+          .remove()
+          .then(function() {
+            console.log("Remove Success.");
+          })
+          .catch(function(error) {
+            console.log("Remove Failed" + error.message);
+          });
+      }
+    </script>
+  </body>
 </html>
