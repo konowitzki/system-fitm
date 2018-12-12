@@ -97,8 +97,8 @@
             var i = 1;
             snapshot.forEach(function(data) {
               var val = data.val();
-              console.log("row", data.val());
-              if (val.isAdmin !== "rootadmin") {
+              //console.log("row", data.val());
+              if (val.isAdmin !== "rootadmin" && val.isAdmin !== "admin1" && val.isAdmin !== "admin2" && val.isAdmin !== "admin3") {
                 content += "<tr>";
                 content += "<td>" + i + "</td>";
                 content += "<td>" + val.name + "</td>";
@@ -115,17 +115,14 @@
                   '")">ลบ</button> </td>';
                 content += "</tr>";
                 i++;
-              }else{
+              } else {
                 content += "<tr>";
                 content += "<td>" + i + "</td>";
                 content += "<td>" + val.name + "</td>";
                 content += "<td>" + val.email + "</td>";
                 content += "<td>" + val.password + "</td>";
                 content += "<td>" + val.isAdmin + "</td>";
-                content +=
-                  '<td colspan="2"> <button id="edit" type="button" class="btn btn-secondary btn-edit" value="' +
-                  data.key +
-                  '">แก้ไข</button> </td>';
+                content += '<td colspan="2"></td>';
                 content += "</tr>";
                 i++;
               }
@@ -136,16 +133,19 @@
         })
         .then(function() {
           $(".btn-delete").on("click", function() {
-            $(this)
+            let userName = $(this)
               .parent()
               .parent()
-              .hide();
-            delRemove($(this).val());
-            console.log($(this).val());
-            $(this)
-              .parent()
-              .parent()
-              .remove();
+              .children(":nth-child(2)")
+              .text();
+            let con = confirm("คุณต้องการลบผู้ใช้ " + userName + " หรือไม่");
+            if (con) {
+              delRemove($(this).val());
+              $(this)
+                .parent()
+                .parent()
+                .hide();
+            }
           });
           $(".btn-edit").on("click", function() {
             url = "edituser.html?uid=" + $(this).val();
