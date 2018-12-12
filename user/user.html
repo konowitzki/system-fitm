@@ -48,9 +48,6 @@
                 </div>
                 <ul>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
-                    <li>
-                        <div id="qrcode" align="center"></div>
-                    </li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -69,6 +66,7 @@
             </div>
         </div>
     </section>
+
     <script>
         let doc;
         database.ref('users/data/' + userId).once('value').then(function (snapshot) {
@@ -159,8 +157,6 @@
                 $('#status-documents-content').show();
             });
         });
-
-
 
     </script>
 </body>

@@ -122,7 +122,6 @@
             </div>
             <!-- End Add QRcode Content -->
         </div>
-
     </section>
 
     <script>
@@ -409,6 +408,18 @@
             }
             qrcode.makeCode(txt);
         });
+        
+        function delRemove(uid) {
+            let firebaseRef = database.ref("document/data/" + uid);
+            firebaseRef
+            .remove()
+            .then(function() {
+                console.log("Remove Success.");
+            })
+            .catch(function(error) {
+                console.log("Remove Failed" + error.message);
+            });
+        }
     </script>
 </body>
 
