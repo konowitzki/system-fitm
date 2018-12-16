@@ -83,7 +83,6 @@
                   id="date"
                   class="form-control"
                   type="date"
-                  value="dd/mm/yyyy"
                   required
                 />
                 <label for="datenow">ลงวันที่</label>
@@ -214,6 +213,7 @@
       });
 
       document.getElementById("datenow").valueAsDate = new Date();
+
       $("#add-data").on("click", function(e) {
         let input = $(".form-control");
         for (let i = 0; i < input.length; i++) {
@@ -241,7 +241,7 @@
           });
       });
       let col = [];
-      //  Pagination Data Status-Content
+      //Pagination Data Status-Content
       database
         .ref("documents")
         .once("child_added", function(snapshot) {

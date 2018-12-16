@@ -17,6 +17,7 @@
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
   <script src="js/config.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   
   <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode</title>
 </head>
@@ -56,7 +57,7 @@
           </label> -->
         </div>
         <button id="signin" class="btn btn-lg btn-primary btn-block" type="submit">เข้าสู่ระบบ</button>
-          <!-- <a class="mt-5 mb-3 text-muted" href="./index.html">กลับ</a> -->
+          <a id="forget" class="mt-5 mb-3 text-muted">ลืมรหัสผ่าน</a>
           <center>
             <p class="mt-5 mb-3 text-muted">Copyright &copy; 2017 Kittapas & Rattanentorn</p>
           </center>
@@ -64,7 +65,6 @@
   </div>
 
   <script>
-
   var page = 0;
   var isAdmin = null;
     document.getElementById("signin").onclick = function(e) {
@@ -82,7 +82,6 @@
       firebase.database().ref(check).once('value', function(snapshot) {
         let childData, childKey;
           snapshot.forEach(function(childSnapshot) {
-          // childKey = childSnapshot.key;
           childData = childSnapshot.val();
           console.log(childData);
 
@@ -101,7 +100,6 @@
             childKey = childSnapshot.key;
           } 
         });
-        // console.log(page);
         session = childKey;
         localStorage.session = session;
 
@@ -124,10 +122,12 @@
           window.location.href = "./user/user.html";
         break;
         default :
-          alert("กรุณาระบุ email & password ให้ถูกต้อง");
-          //window.location.href = "login.html";
+          swal("กรุณาระบุ email & password ให้ถูกต้อง");
         }
       });
+    }
+    document.getElementById("forget").onclick = function () {
+      window.location.href = "forget.html";
     }
   </script>
 </body>
