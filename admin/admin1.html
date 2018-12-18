@@ -79,12 +79,7 @@
             <div class="row">
               <div class="col-6">
                 <label for="date">วันที่</label>
-                <input
-                  id="date"
-                  class="form-control"
-                  type="date"
-                  required
-                />
+                <input id="date" class="form-control" type="date" required />
                 <label for="datenow">ลงวันที่</label>
                 <input id="datenow" class="form-control" type="date" required />
                 <label for="reach">ถึง</label>
@@ -253,33 +248,36 @@
               interval = 5;
             snapshot.forEach(function(data) {
               let val = data.val();
-              content += "<tr>";
-              content += "<td>" + val.numreceive + "</td>";
-              content += `<td><h5>${val.subject}</h5>
+              if (val.status === "รับเข้า") {
+                content += "<tr>";
+                content += "<td>" + val.numreceive + "</td>";
+                content += `<td><h5>${val.subject}</h5>
                                                 <small>${val.date}</small>
                                                 <span class="blockquote-footer">จาก ${
                                                   val.from
                                                 } ถึง ${val.reach}</span>
                                                 </td>`;
-              content += "<td>" + val.work + "</td>";
-              content += "<td>" + val.note + "</td>";
-              content +=
-                '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                data.key +
-                '")">' +
-                val.status +
-                "</button></td>";
-              content +=
-                '<td class="text-center"><div class="btn btn-primary">' +
-                val.cradit +
-                "</div></td>";
-              content +=
-                '<td class="text-center"><button type="button" class="btn btn-danger btn-delete" value="' +
-                data.key +
-                '")">ลบเอกสาร</button></td>';
-              content += "</tr>";
-              i++;
-              col.push($(content));
+                content += "<td>" + val.work + "</td>";
+                content += "<td>" + val.note + "</td>";
+                content +=
+                  '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                  data.key +
+                  '")">' +
+                  val.status +
+                  "</button></td>";
+                content +=
+                  '<td class="text-center"><div class="btn btn-primary">' +
+                  val.cradit +
+                  "</div></td>";
+                content +=
+                  '<td class="text-center"><button type="button" class="btn btn-danger btn-delete" value="' +
+                  data.key +
+                  '")">ลบเอกสาร</button></td>';
+                content += "</tr>";
+                i++;
+                col.push($(content));
+                content = "";
+              }
               if (i % interval === 0) {
                 page++;
                 $(
@@ -463,28 +461,30 @@
               interval = 5;
             snapshot.forEach(function(data) {
               let val = data.val();
-              content += "<tr>";
-              content += "<td>" + val.numreceive + "</td>";
-              content += `<td><h5>${val.subject}</h5>
+              if (val.status === "รับเข้า") {
+                content += "<tr>";
+                content += "<td>" + val.numreceive + "</td>";
+                content += `<td><h5>${val.subject}</h5>
                                                 <small>${val.date}</small>
                                                 <span class="blockquote-footer">จาก ${
                                                   val.from
                                                 } ถึง ${val.reach}</span>
                                                 </td>`;
-              content +=
-                '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                data.key +
-                '")">' +
-                val.status +
-                "</button></td>";
-              // เริ่ม ติด Check Box
-              content +=
-                '<td class="text-center"><input class="form-check-input" type="checkbox" value="' +
-                val.numreceive +
-                '" style="width:30px;height:30px;"></td>';
-              // ปิด ติด Check Box
-              content += "</tr>";
-              i++;
+                content +=
+                  '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                  data.key +
+                  '")">' +
+                  val.status +
+                  "</button></td>";
+                // เริ่ม ติด Check Box
+                content +=
+                  '<td class="text-center"><input class="form-check-input" type="checkbox" value="' +
+                  val.numreceive +
+                  '" style="width:30px;height:30px;"></td>';
+                // ปิด ติด Check Box
+                content += "</tr>";
+                i++;
+              }
             });
             //if (i % interval !== 0) {
             let pagContent = $('<div class="pagination-content-qr"></div>');
