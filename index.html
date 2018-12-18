@@ -52,9 +52,6 @@
       </div>
 
       <div class="checkbox mb-3">
-          <!-- <label>
-              <input type="checkbox" value="remember-me"> จำรหัสผ่าน
-          </label> -->
         </div>
         <button id="signin" class="btn btn-lg btn-primary btn-block" type="submit">เข้าสู่ระบบ</button>
           <a id="forget" class="mt-5 mb-3 text-muted">ลืมรหัสผ่าน</a>
@@ -96,6 +93,8 @@
               page = 4;
             } else if (childData.isAdmin === "user") {
               page = 5;
+            } else if (childData.isAdmin === "superadmin") {
+              page = 6;
             }
             childKey = childSnapshot.key;
           } 
@@ -120,6 +119,8 @@
         break; 
         case 5:
           window.location.href = "./user/user.html";
+        case 6:
+          window.location.href = "./rootadmin/root.html";
         break;
         default :
           swal("กรุณาระบุ email & password ให้ถูกต้อง");
