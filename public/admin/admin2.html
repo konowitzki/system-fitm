@@ -72,7 +72,8 @@
                     interval = 5;
                 snapshot.forEach(function (data) {
                     let val = data.val();
-                    content += '<tr>';
+                    if (val.status === "รับเข้า" || val.status === "รออนุมัติ") {
+                        content += '<tr>';
                     content += '<td>' + val.numreceive + '</td>';
                     content +=
                         `<td><h5>${val.subject}</h5>
@@ -89,6 +90,9 @@
                     content += '</tr>';
                     i++;
                     col.push($(content));
+                    content = "";
+                    }
+                    
                     if (i % interval === 0) {
                         page++;
                         $('<div class="pagination-page">' + page + '</div>').insertBefore(
@@ -136,7 +140,6 @@
                 $($('.pagination-content')[index]).show();
             });
             $('#status-documents-content').show();
-            
             col.reverse();
             pagUpdate(col);
             function pagUpdate(data) {
