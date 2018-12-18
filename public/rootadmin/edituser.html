@@ -61,6 +61,7 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input id="pwd" type="password" class="form-control" placeholder="Password">
+                        <input type="checkbox" onclick="showPassword()">Show Password
                     </div>
                     <button id="edit-data" type="button" class="btn btn-info">แก้ไขขัอมูล</button>
                     <div id="back" class="btn btn-danger" style="margin: 5px 2px;">กลับ</div>
@@ -100,6 +101,14 @@
                 return false;
             }
         });
+        function showPassword() {
+            var x = document.getElementById("pwd");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
 
         // Get Data
         database.ref('users/data/' + uid).once('value').then(function (snapshot) {

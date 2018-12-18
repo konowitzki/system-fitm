@@ -89,6 +89,7 @@
             emailjs.send(service_id,template_id,template_params).then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
                 swal("กรุณาตรวจสอบที่อีเมล์");
+                window.location.href = "index.html";
                 }, function(error) {
                 console.log('FAILED...', error);
             });;
