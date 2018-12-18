@@ -21,6 +21,7 @@
         crossorigin="anonymous"></script>
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : สร้างรหัสผ่านใหม่</title>
 
@@ -61,10 +62,14 @@
                             </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="email">ยืนยันอีเมล์</label>
+                    <input id="email" type="email" class="form-control" placeholder="กรุณากรอกข้อมูล">
+                </div>
+                        </form>
             </div>
             <div class="card-footer">
-                    <button name="resetPass-btn" class="btn btn-primary" onclick="">ยืนยัน</button>
-                </form>
+                <button id="edit-data" class="btn btn-primary" onclick="updatePass()">ยืนยัน</button>
             </div>
             </div>
         </div>
@@ -72,6 +77,14 @@
     <!-- End Content -->
 
     <script>
+        $('#email').on('keydown keyup', function (event) {
+            let format = /[!#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
+            let str = $(this).val();
+            if(format.test(str)){
+                $(this).val(str.substring(0, str.length - 1));
+                return false;
+            }
+        });
         $('#pwd').on('keydown keyup', function (event) {
             let format = /[!#$%^&*()+\-=\[\]{};':"\\|,<>\/?]+/;
             let str = $(this).val();
@@ -94,6 +107,26 @@
             } else 
                 $('#message').html('Not Matching').css('color', 'red');
         });
+        // $('#edit-data').on('click', function () {
+        //     // Update Data
+        //     var uid = "-LU0pui7GKK3ibLamBsp";
+        //     database.ref('users/data/' + uid).once('value').then(function (snapshot) {
+        //         updates['users/data/' + uid] = {
+        //             email: $('#email').val(),
+        //             password: $('#pwd').val(),
+        //             isAdmin: isAdmin
+        //         };
+        //         dbRef.update(updates);
+        //     });
+        // });
+        function updatePass() {
+            const fb = firebase.database().ref()
+            email = document.getElementById("email").value;
+            password = document.getElementById("pwd").value;
+            data = { email,password }
+            fb.child('users/data/-LU0pui7GKK3ibLamBsp').update(data);
+            alert("เรียบร้อยแล้ว !");
+        }
     </script>
 </body>
 

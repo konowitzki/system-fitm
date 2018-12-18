@@ -73,11 +73,11 @@
                         <label for="name" hidden>สถานะ</label>
                         <input id="status" type="hidden" class="form-control" value="user" disabled>
                     </div>
+                </form>
             </div>
             <div class="card-footer">
-                    <button id="add-data" class="btn btn-primary">เพิ่มข้อมูลสมาชิก</button>
-                    <div id="back" class="btn btn-danger" style="margin: 5px 2px;">กลับ</div>
-                </form>
+                <button id="add-data" class="btn btn-primary">เพิ่มข้อมูลสมาชิก</button>
+                <div id="back" class="btn btn-danger" style="margin: 5px 2px;">กลับ</div>
             </div>
             </div>
         </div>
@@ -132,7 +132,7 @@
                 password: pwd,
                 isAdmin: status
             });
-            swal("เพิ่มข้อมูลสำเร็จ !");
+            alert("เพิ่มข้อมูลสำเร็จ !");
             window.location.href = "root.html";
         }
 

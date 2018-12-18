@@ -97,8 +97,7 @@
             var i = 1;
             snapshot.forEach(function(data) {
               var val = data.val();
-              //console.log("row", data.val());
-              if (val.isAdmin !== "rootadmin" && val.isAdmin !== "admin1" && val.isAdmin !== "admin2" && val.isAdmin !== "admin3") {
+              if (val.isAdmin !== "rootadmin" && val.isAdmin !== "admin1" && val.isAdmin !== "admin2" && val.isAdmin !== "admin3" && val.isAdmin !== "superadmin") {
                 content += "<tr>";
                 content += "<td>" + i + "</td>";
                 content += "<td>" + val.name + "</td>";
