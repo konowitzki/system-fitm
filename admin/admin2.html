@@ -24,6 +24,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
     <script src="../js/config.js"></script>
     <script src="../js/session.js"></script>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     <title>ระบบการจัดการและติดตามงานสารบรรณโดยใช้ QRCode : ผู้ดูแลระบบที่ 2</title>
 </head>
@@ -40,12 +41,13 @@
                 </div>
                 <ul>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
+                    <li id="scan-qrcode" class="tab-nav">สแกนคิวอาร์โค้ด</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
         </div>
         <div class="page-warpper">
-            <!-- Status Documents -->
+            <!-- status-documents-content -->
             <div id="status-documents-content" class="container-fluid form-content">
                 <div style="margin: 8px 2px;font-size: 20px;">
                     <i class="fas fa-exchange-alt" style="font-size: 24px;"></i> สถานะเอกสาร
@@ -57,10 +59,39 @@
                 </div>
                 <div class="pagination-warpper"></div>
             </div>
+            
+            <!-- scan-qrcode-content -->
+            <div id="scan-qrcode-content" class="container-fluid form-content">
+                <div style="margin: 8px 2px;font-size: 20px;">
+                    <i class="fas fa-qrcode" style="font-size: 24px;"></i> สแกนคิวอาร์โค้ด
+                </div>
+                <!-- scan-qrocde -->
+                <video id="preview"></video>
+                <h3>
+                    Data : 
+                </h3>
+            </div>
         </div>
     </section>
 
     <script>
+        $("#status-documents").show();
+        $("#status-documents-content").addClass("active");
+
+        $("#status-documents").on("click", function() {
+            $(".form-content").hide();
+            $("#status-documents-content").show();
+        });
+
+        $("#scan-qrcode").on("click", function() {
+            $(".form-content").hide();
+            $("#scan-qrcode-content").show();
+        });
+        $(".tab-nav").on("click", function() {
+            $(".tab-nav").removeClass("active");
+            $(this).addClass("active");
+        });
+
         let col = [];
         //  Pagination Data
         database.ref("documents").once('child_added', function (snapshot) {
@@ -247,9 +278,22 @@
                 });
             });
         });
-
-
     </script>
+    <script type="text/javascript">
+        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+        scanner.addListener('scan', function (content) {
+          alert(content);
+        });
+        Instascan.Camera.getCameras().then(function (cameras) {
+          if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+          } else {
+            console.error('No cameras found.');
+          }
+        }).catch(function (e) {
+          console.error(e);
+        });
+      </script>
 </body>
 
 </html>
