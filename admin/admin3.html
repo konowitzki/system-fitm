@@ -65,7 +65,7 @@
           <ul>
             <li id="add-documents" class="tab-nav">เพิ่มเอกสาร</li>
             <li id="add-qrcode" class="tab-nav">เพิ่ม QRcode</li>
-            <li id="scan-qrcode" class="tab-nav">สแกนคิวอาร์โค้ด</li>
+            <li id="scan-qrcode" class="tab-nav" onclick="openQR()">สแกนคิวอาร์โค้ด</li>
             <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
             <li id="save-documents" class="tab-nav">เก็บเอกสาร</li>
             <li id="search-documents" class="tab-nav">สืบค้นเอกสารย้อนหลัง</li>
@@ -294,7 +294,9 @@
           </div>
           <!-- scan-qrocde -->
           <video id="preview"></video>
-          <h3>Data :</h3>
+          <h3>Link :
+            <a id="scan-qr" href=""></a>
+          </h3>
         </div>
         <!-- End Scan QRcode Content -->
 
@@ -1185,11 +1187,13 @@
       }
     </script>
     <script type="text/javascript">
-      let scanner = new Instascan.Scanner({
+      function openQR() {
+        let scanner = new Instascan.Scanner({
         video: document.getElementById("preview")
       });
       scanner.addListener("scan", function(content) {
         alert(content);
+        $("#scan-qr").attr("href",content).text(content);
       });
       Instascan.Camera.getCameras()
         .then(function(cameras) {
@@ -1202,6 +1206,7 @@
         .catch(function(e) {
           console.error(e);
         });
+      };
     </script>
   </body>
 </html>

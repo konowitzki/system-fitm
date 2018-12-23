@@ -41,7 +41,7 @@
                 </div>
                 <ul>
                     <li id="status-documents" class="tab-nav">สถานะเอกสาร</li>
-                    <li id="scan-qrcode" class="tab-nav">สแกนคิวอาร์โค้ด</li>
+                    <li id="scan-qrcode" class="tab-nav" onclick="openQR()">สแกนคิวอาร์โค้ด</li>
                     <li class="btn-logout" onclick="logout()">ออกจากระบบ</li>
                 </ul>
             </nav>
@@ -280,19 +280,21 @@
         });
     </script>
     <script type="text/javascript">
-        let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-        scanner.addListener('scan', function (content) {
-          alert(content);
-        });
-        Instascan.Camera.getCameras().then(function (cameras) {
-          if (cameras.length > 0) {
-            scanner.start(cameras[0]);
-          } else {
-            console.error('No cameras found.');
-          }
-        }).catch(function (e) {
-          console.error(e);
-        });
+        function openQR() {
+            let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+            scanner.addListener('scan', function (content) {
+            alert(content);
+            });
+            Instascan.Camera.getCameras().then(function (cameras) {
+            if (cameras.length > 0) {
+                scanner.start(cameras[0]);
+            } else {
+                console.error('No cameras found.');
+            }
+            }).catch(function (e) {
+            console.error(e);
+            });
+        }
       </script>
 </body>
 
