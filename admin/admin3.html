@@ -958,12 +958,12 @@
                                                         val.from
                                                       } ถึง ${val.reach}</span>
                                                       </td>`;
-                  content +=
-                    '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
-                    data.key +
-                    '">' +
-                    val.status +
-                    "</button></td>";
+                  // content +=
+                  //   '<td class="text-center"><button type="button" class="btn btn-danger btn-submit" value="' +
+                  //   data.key +
+                  //   '">' +
+                  //   val.status +
+                  //   "</button></td>";
                   // TODO: Download URl
                   if (val.addten === "") {
                     content += '<td class="text-center"></td>';
@@ -985,7 +985,8 @@
               let thead = $("<thead></thead>");
               let tr = $('<tr class="text-center"></tr>');
               let th = $(
-                "<th>เลขที่รับ</th><th>เรื่อง</th><th>สถานะ</th><th>ดาวน์โหลด</th>"
+                // ลบ <th>สถานะ</th> ออกไป
+                "<th>เลขที่รับ</th><th>เรื่อง</th><th>ดาวน์โหลด</th>"
               );
               thead.append(tr.append(th));
               pagContent.append(table.append(thead, col));
