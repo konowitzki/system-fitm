@@ -288,16 +288,15 @@
 
         <!-- Start Scan QRcode Content -->
         <div id="scan-qrcode-content" class="container-fluid form-content">
-            <div style="margin: 8px 2px;font-size: 20px;">
-                <i class="fas fa-qrcode" style="font-size: 24px;"></i> สแกนคิวอาร์โค้ด
-            </div>
-            <!-- scan-qrocde -->
-            <video id="preview"></video>
-            <h3>
-                Data : 
-            </h3>
+          <div style="margin: 8px 2px;font-size: 20px;">
+            <i class="fas fa-qrcode" style="font-size: 24px;"></i>
+            สแกนคิวอาร์โค้ด
           </div>
-          <!-- End Scan QRcode Content -->
+          <!-- scan-qrocde -->
+          <video id="preview"></video>
+          <h3>Data :</h3>
+        </div>
+        <!-- End Scan QRcode Content -->
 
         <!-- Start Search Backup Documents -->
         <div id="search-documents-content" class="container-fluid form-content">
@@ -819,33 +818,43 @@
           },
           function() {
             // Upload completed successfully, now we can get the download URL
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(function(downloadURL) {
-                url = downloadURL;
-                let rootRef = firebase.database().ref();
-                let storesRef = rootRef.child("documents/data/");
-                let newStoreRef = storesRef.push();
-                let updateData = {
-                  date: date,
-                  numreceive: numreceive,
-                  datenow: datenow,
-                  from: from,
-                  reach: reach,
-                  subject: subject,
-                  work: work,
-                  note: note,
-                  status: status,
-                  role: role,
-                  cradit: $("#result").text(),
-                  addten: downloadURL
-                };
-                let updates = {};
-                updates[keyData] = updateData;
-                console.log(updates);
-                storesRef.update(updates);
-                location.reload();
+            database.ref("documents/data").once("value", function(snapshot) {
+              snapshot.forEach(function(childSnapshot) {
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                if (childData.numreceive === $("#save-numreceive").val()) {
+                  keyData = childKey;
+                  //dataVal = childData;
+                  uploadTask.snapshot.ref
+                    .getDownloadURL()
+                    .then(function(downloadURL) {
+                      url = downloadURL;
+                      let rootRef = firebase.database().ref();
+                      let storesRef = rootRef.child("documents/data/");
+                      let newStoreRef = storesRef.push();
+                      let updateData = {
+                        date: date,
+                        numreceive: numreceive,
+                        datenow: datenow,
+                        from: from,
+                        reach: reach,
+                        subject: subject,
+                        work: work,
+                        note: note,
+                        status: status,
+                        role: role,
+                        cradit: $("#result").text(),
+                        addten: downloadURL
+                      };
+                      let updates = {};
+                      updates[keyData] = updateData;
+                      console.log(updates);
+                      storesRef.update(updates);
+                      location.reload();
+                    });
+                }
               });
+            });
           }
         );
       });
@@ -1176,19 +1185,23 @@
       }
     </script>
     <script type="text/javascript">
-      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-      scanner.addListener('scan', function (content) {
+      let scanner = new Instascan.Scanner({
+        video: document.getElementById("preview")
+      });
+      scanner.addListener("scan", function(content) {
         alert(content);
       });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
-          console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
+      Instascan.Camera.getCameras()
+        .then(function(cameras) {
+          if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+          } else {
+            console.error("No cameras found.");
+          }
+        })
+        .catch(function(e) {
+          console.error(e);
+        });
     </script>
   </body>
 </html>
